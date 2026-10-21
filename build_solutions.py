@@ -6,6 +6,7 @@ Requires nbclient and a working Python 3 Jupyter kernel for execution.
 from pathlib import Path
 import argparse
 import copy
+import inspect
 import os
 import textwrap
 import nbformat
@@ -16,7 +17,7 @@ ROOT = Path(__file__).parent.resolve()
 
 
 def markdown(source):
-    return nbformat.v4.new_markdown_cell(textwrap.dedent(source).strip())
+    return nbformat.v4.new_markdown_cell(inspect.cleandoc(source))
 
 
 def code(source):

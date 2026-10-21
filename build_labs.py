@@ -1,5 +1,6 @@
 """Rebuild the authored student notebooks (requires nbformat)."""
 from pathlib import Path
+import inspect
 import textwrap
 import nbformat as nbf
 from teaching_materials import system_diagram, EXAMPLES, GUIDANCE
@@ -10,7 +11,8 @@ ROOT = Path(__file__).parent
 def write_lab(folder, title, intro, theory, starter, tasks, extension):
     path = ROOT / folder
     path.mkdir(exist_ok=True)
-    md = lambda s: nbf.v4.new_markdown_cell(textwrap.dedent(s).strip())
+    # cleandoc handles a heading on the opening line followed by indented text.
+    md = lambda s: nbf.v4.new_markdown_cell(inspect.cleandoc(s))
     code = lambda s: nbf.v4.new_code_cell(textwrap.dedent(s).strip())
     cells = [md(f'# {title}\n\n{intro}'), md('''
     **Time budget: 6 hours, including a short break and submission.** Work in pairs,
@@ -83,6 +85,7 @@ energy is added or removed. Match the labels to the variables in the model below
 write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
     'Design a water-transfer line between two open tanks. Select a pipe and pump operating speed, then defend the energy implications.',
     r'''## Model and assumptions
+
     Steady, incompressible, isothermal flow; large open tanks; negligible tank velocities.
     $v=4Q/(\pi D^2)$, $Re=\rho vD/\mu$.
     Use the **Darcy** friction factor (four times the Fanning factor):
@@ -120,6 +123,7 @@ write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
 write_lab('lab_02_heat', 'Lab 2 — Heat recovery with a countercurrent exchanger',
     'Recover heat from a warm process stream to preheat water. Size an exchanger and predict how fouling changes its performance.',
     r'''## Model and assumptions
+
     Steady operation, no heat loss or phase change, constant heat capacities and overall
     heat-transfer coefficient; ideal countercurrent flow, so the LMTD correction factor is 1.
     $C_h=\dot m_hc_{p,h}$, $C_c=\dot m_cc_{p,c}$, and
@@ -150,6 +154,7 @@ write_lab('lab_02_heat', 'Lab 2 — Heat recovery with a countercurrent exchange
 write_lab('lab_03_distillation', 'Lab 3 — Binary distillation and ideal stages',
     'Design a teaching-model binary distillation column, using graphical stepping and a numerical stage counter. Explore the cost of demanding higher purity.',
     r'''## Model and assumptions
+
     Binary mixture, constant relative volatility $\alpha=2.4$, constant molar overflow,
     saturated-liquid feed ($q=1$), total condenser and equilibrium partial reboiler.
     These assumptions define a hypothetical mixture; they are not property data for a real pair.
@@ -183,6 +188,7 @@ write_lab('lab_03_distillation', 'Lab 3 — Binary distillation and ideal stages
 write_lab('lab_04_absorption', 'Lab 4 — Gas absorption and column height',
     'Remove a dilute solute from a gas using a countercurrent solvent. Connect material balances, ideal stages, efficiency and a hydraulic screening calculation.',
     r'''## Model and assumptions
+
     Isothermal, dilute, nonreacting absorption with constant solute-free gas and solvent
     flow rates $G_s,L_s$ (kmol/h). Use mole ratios $Y=y/(1-y)$ and $X=x/(1-x)$.
     Assume the hypothetical equilibrium relation $Y^*=mX$, with $m=1.5$.
