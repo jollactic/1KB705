@@ -1,5 +1,23 @@
 # Instructor notes — draft for review
 
+## Introductory Lab 00
+
+Use `lab_00` before the four design labs. Its core is deliberately basic and
+takes about three hours (30/35/35/40/25/15 min, including a short break).
+Optional practice can extend this to four–six hours. Ask students to write
+boundaries, assumptions, symbolic equations and units before looking at results.
+Do not grade Python. Emphasize that zero residual is an arithmetic check, not
+validation of an assumed physical model. Accept a calculator-first workflow.
+
+Benchmarks: mixer outlet 100 kg/h at 8 wt% salt; splitter branches 30/70 kg/h
+at unchanged 8 wt%; evaporator product/vapour 40/60 kg/h at 20 wt% product;
+water-heater duty 250.8 kW and two-hour heat 501.6 kWh; adiabatic mixed
+temperature 35 °C; tank inventory at ten minutes 350 kg, with capacity reached
+at 700 s. Distinguish heat transferred from electrical consumption. Evaporation
+energy is explicitly outside the simple mass-only example. Do not continue tank
+predictions after emptying or overflow. The separate solution covers all core
+questions, a final explanation and the optional exercises.
+
 These labs are designed as computational design exercises, not laboratory
 measurement protocols. Pilot the six-hour workload and review the intended
 syllabus version before assigning. In this **design-support variant**, students

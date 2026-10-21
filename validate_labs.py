@@ -45,6 +45,18 @@ def main():
             raise AssertionError(f'{folder.name}: {result.stderr}')
         print(f'{folder.name}: valid notebook; supplied code executes')
 
+    intro = load('lab_00')
+    total,fraction = intro.mix_streams(80,.1,20)
+    close(total,100); close(total*fraction,8)
+    product,vapour = intro.evaporate(100,.08,.2)
+    close(product+vapour,100); close(product*.2,8)
+    close(intro.heating_duty(2,4180,20,50),250800)
+    close(intro.mixing_temperature(.5,80,1.5,20),35)
+    close(intro.tank_inventory(50,2,1.5,600),350)
+    rejects(intro.evaporate,100,.08,.05)
+    rejects(intro.tank_inventory,50,2,2.5,600)
+    print('Lab 00: basic balances, conservation and model-domain checks passed')
+
     flow = load('lab_01_flow')
     close(flow.friction_factor(1000, 0), 0.064)
     rejects(flow.friction_factor, 3000, 0)

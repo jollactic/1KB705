@@ -239,4 +239,7 @@ write_lab('lab_04_absorption', 'Lab 4 — Gas absorption and column height',
     'Compare the stage model with a continuous transfer-unit model. State which additional mass-transfer coefficients and interfacial-area data are needed.')
 
 if __name__ == '__main__':
-    print('Built student notebooks' + (f': {SELECTED_LAB}' if SELECTED_LAB else ': all four') + '.')
+    if SELECTED_LAB in (None,'lab_00'):
+        from balances_intro import build_intro
+        build_intro()
+    print('Built student notebooks' + (f': {SELECTED_LAB}' if SELECTED_LAB else ': all five') + '.')

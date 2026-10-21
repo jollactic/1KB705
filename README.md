@@ -1,5 +1,13 @@
 # Design workshops — Kemisk apparatteknik (1KB705)
 
+Start with **`lab_00`**, an introductory workshop on choosing system boundaries
+and writing elementary total-mass, component and heat balances. It includes
+mixing, splitting, water evaporation (mass balance only), stream heating,
+adiabatic temperature mixing and tank accumulation. Students write equations
+and units before running supplied checks. No programming or prior balance
+course is assumed. Plan about three hours of core work, with optional practice
+up to six hours. A separate completed `lab_solution.ipynb` is included.
+
 Four draft Jupyter labs, each scoped for approximately **six hours** of student work.
 This **`jolla-design-support`** branch provides a version with less coding and
 more engineering design. The original programming-oriented version remains on
@@ -9,6 +17,7 @@ No Python algorithms, loops or plotting code need to be written or assessed.
 
 | Folder | Design problem | Principal syllabus alignment | Student decisions |
 | --- | --- | --- | --- |
+| `lab_00` | First mass and heat balances | Conservation, system boundaries, units, accumulation | Write equations, check assumptions and physical limits |
 | `lab_01_flow` | Water-transfer line and pump | Flowing fluids, pressure losses, pumps | Select diameter/speed at fixed delivery, compare lifecycle cost, choose series/parallel arrangements |
 | `lab_02_heat` | Heat recovery and fouling | Heat exchangers, energy balances | Choose fouling allowance, area and operating flow |
 | `lab_03_distillation` | Binary separation | Material balances, graphical/numerical stages, efficiency | Choose reflux/purity policy and tray-height assumptions |
@@ -121,6 +130,14 @@ and plotting functions live in `lab_01_flow/helpers.py`. It overrides the older
 flow template retained in the common builder. `flow_solution.py` holds its current
 question-by-question instructor answers. Use `python build_labs.py --lab lab_01_flow`
 and `python build_solutions.py --lab lab_01_flow` for a targeted rebuild.
+
+`balances_intro.py` holds Lab 00's instructions, diagrams and model answers;
+its independent numerical checks are in `lab_00/helpers.py`. Build with
+`python build_labs.py --lab lab_00` and
+`python build_solutions.py --lab lab_00`. The usual `--runtime-dir` option
+is also available for executing its solution in a restricted environment.
+The introductory authoring module contains answers; student distributions need
+only its notebook and matching helper file.
 
 `workshop_extensions.py` supplies the core comparison prompts, diagrams and
 analysis cells for Labs 2–4; their numerical design comparisons live in each

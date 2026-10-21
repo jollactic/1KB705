@@ -26,6 +26,9 @@ def code(source):
 
 
 def build(execute=True,lab=None):
+    if lab in (None,'lab_00'):
+        from balances_intro import build_intro
+        build_intro(solution=True,execute=execute)
     for folder, answers in SOLUTIONS.items():
         if lab and folder != lab:
             continue
