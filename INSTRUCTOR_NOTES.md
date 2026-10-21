@@ -2,31 +2,41 @@
 
 These labs are designed as computational design exercises, not laboratory
 measurement protocols. Pilot the six-hour workload and review the intended
-syllabus version before assigning. Students need a brief Python primer if array
-operations, functions and plotting are new to them. No physical equipment or
+syllabus version before assigning. In this **design-support variant**, students
+need only know how to run a cell, change a parameter and read a table or plot.
+Numerical methods are supplied. No physical equipment or
 hazardous-material handling is part of these exercises.
 
 ## Common facilitation
 
 Start with a flowsheet and a prediction. At 90 minutes, check one hand calculation
-and the student's units before helping with code. At three hours, require one
-validated numerical result before students begin parameter sweeps. If a pair is
-behind, supply pseudocode for bisection or stage stepping and retain the design
-interpretation questions. Extensions are enrichment, not an assessment requirement.
+and the student's units before discussing a recommendation. At three hours,
+require a feasible candidate and its operating margin. If a pair is behind,
+help identify the decisive table rows or plot region rather than assigning
+algorithm implementation. Extensions are enrichment, not an assessment requirement.
 
 Use the embedded diagram to establish the system boundary before equations.
 Students should spend about 20 minutes of the model-development block running
 the worked example and making the suggested small change. Ask them to predict
 the result aloud before running it. The `ex_` variable prefix separates these
-small examples from the main case. The separation examples show only two steps;
-students extend them with feed switching, feasibility checks and stopping rules.
+small examples from the main case. The separation examples show two steps;
+the supplied main-case routine completes the staircase and all feasibility checks.
 Keep the six-hour total by using this example as the start of model development,
 rather than as an additional activity.
 
 The supplied helper functions intentionally expose reference calculations.
-Students must still derive the balances, implement the requested numerical method,
-and explain numerical failures. Comparing a student's code only with a helper
-is insufficient: use limiting cases and conservation checks as well.
+Students should explain the balances, hand-check one quantity, interpret supplied
+verification results and explain infeasible designs. Their deliverable is a
+defended design decision, not new code. Use conservation and limiting cases to
+distinguish numerical consistency from real equipment validation.
+
+Assess model understanding (25%), design choices and tradeoffs (35%), robustness
+and limits (25%), and communication/reproducibility (15%). For each major decision,
+look for a requirement, at least two numerical facts, a rejected alternative,
+and a reason new evidence might change the choice. The saved solution notebooks
+illustrate the base settings; other feasible, well-supported choices are valid.
+Require students to rerun downstream cells after editing a setting. The default
+settings reproduce the original base cases and the reference recommendations.
 
 ## Benchmark results
 

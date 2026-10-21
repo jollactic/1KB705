@@ -1,26 +1,29 @@
-# Computational labs — Kemisk apparatteknik (1KB705)
+# Design workshops — Kemisk apparatteknik (1KB705)
 
 Four draft Jupyter labs, each scoped for approximately **six hours** of student work.
-Written in English for pairs, with a runnable example, calculations students must
-implement, sensitivity analysis, and an engineering recommendation. No prior
-experience with numerical root finding or stage stepping is assumed; allow an
-introductory Python session if students have never used arrays and plotting.
+This **`jolla-design-support`** branch provides a version with less coding and
+more engineering design. The original programming-oriented version remains on
+`jolla`. Students run supplied numerical routines, change clearly marked
+**DESIGN SETTINGS**, compare alternatives, and write their recommendations.
+No Python algorithms, loops or plotting code need to be written or assessed.
 
-| Folder | Design problem | Principal syllabus alignment | Student implementation |
+| Folder | Design problem | Principal syllabus alignment | Student decisions |
 | --- | --- | --- | --- |
-| `lab_01_flow` | Water-transfer line and pump | Flowing fluids, pressure losses, pumps | Bernoulli balance and bisection |
-| `lab_02_heat` | Heat recovery and fouling | Heat exchangers, energy balances | Effectiveness–NTU and feasibility checks |
-| `lab_03_distillation` | Binary separation | Material balances, graphical/numerical stages, efficiency | McCabe–Thiele staircase and tray height |
-| `lab_04_absorption` | Solvent rate and column size | Absorption, stages, column height, porous beds | Absorber staircase and hydraulic screening |
+| `lab_01_flow` | Water-transfer line and pump | Flowing fluids, pressure losses, pumps | Select pipe/speed, check throughput margin and energy |
+| `lab_02_heat` | Heat recovery and fouling | Heat exchangers, energy balances | Choose fouling allowance, area and operating flow |
+| `lab_03_distillation` | Binary separation | Material balances, graphical/numerical stages, efficiency | Choose reflux/purity policy and tray-height assumptions |
+| `lab_04_absorption` | Solvent rate and column size | Absorption, stages, column height, porous beds | Choose solvent policy, compare internals and robustness |
 
 Each folder contains `lab.ipynb` and an independent `helpers.py`. There are no
 cross-lab imports, API keys, remote data requirements, or repository-specific URLs.
 
 Each notebook starts with a labelled system diagram and a small worked example.
 Students first change one parameter, predict the result, and explain what they
-observe; they then extend the example to the main design problem. Distillation
-and absorption include plots of the first two equilibrium steps. Suggested routes
-break the larger tasks into balance, calculation, iteration and interpretation.
+observe; they then use the supplied analyses for the main design problem.
+Implementation cells are collapsed where the notebook viewer supports it, with
+separate editable design settings. Students record requirements, numerical
+evidence, a decision and what could change it. They keep at least one rejected
+design and explain why it fails or is less attractive.
 The diagrams are embedded in the notebooks, so no image downloads are required.
 
 ## Run locally
@@ -48,16 +51,16 @@ Colab normally supplies NumPy and Matplotlib. The notebooks use no SciPy feature
 
 ## Teaching and assessment
 
-The six-hour estimate includes setup (30 min), model development (75 min),
-numerical work (90 min), design comparison (75 min), sensitivity and a break
+The six-hour estimate includes setup (30 min), balance and feasibility review (75 min),
+operating-policy decisions and checks (90 min), design comparison (75 min), sensitivity and a break
 (45 min), and reporting (45 min). Pilot these timings with a small student group;
 they are estimates, not measured completion times. Extensions are optional.
 
-Suggested assessment: physical model and assumptions 25%; numerical correctness
-and balance checks 30%; sensitivity and engineering judgement 25%; clear,
-reproducible reporting 20%. Students should submit a completed notebook and its
+Suggested assessment: balances, units and model understanding 25%; design choices
+and tradeoffs 35%; robustness and limitations 25%; clear, reproducible reporting
+15%. Students should submit a completed notebook and its
 300–500 word recommendation. Grade reasoning and checks, not matching a single
-rounded stage count. `INSTRUCTOR_NOTES.md` contains benchmark results; remove it
+rounded stage count. No marks are assigned for writing Python. `INSTRUCTOR_NOTES.md` contains benchmark results; remove it
 from a student distribution if you want to withhold those values.
 
 These computational exercises cover selected outcomes. They do not cover all
@@ -85,14 +88,19 @@ stage-count conventions are stated in the notebooks/helper docstrings.
 ```sh
 python build_labs.py
 python validate_labs.py
+python validate_design_labs.py
 ```
 
-The builder and `teaching_materials.py` are the notebook content sources. The
-latter holds the system-diagram drawing code and worked examples. Edit these and
-rebuild when changing student instructions; helper modules are edited directly. Validation checks
+`build_labs.py` and `teaching_materials.py` hold the common cases, diagrams and
+worked examples. `design_materials.py` replaces implementation exercises with
+design questions and settings; `design_calculations.py` supplies the analysis
+code. Edit these sources and rebuild when changing student instructions; helper
+modules are edited directly. Validation checks
 notebook structure, executes every supplied code cell in a separate process per
-lab with a headless plotting backend, and checks physical benchmarks. Student
-TODO cells intentionally contain comments and are not completed solutions.
+lab with a headless plotting backend, and checks physical benchmarks. Design
+scenario checks also exercise changed settings, including infeasible throughput
+requirements. Numerical calculations are complete in student notebooks; written
+decisions and recommendations remain open.
 Choose a repository licence before public release.
 
 ## Completed instructor solutions
@@ -101,7 +109,7 @@ Each lab folder also has a separate **`lab_solution.ipynb`** with all exercise
 cells filled, written interpretations, a model engineering recommendation and
 the optional extension. The small-change exercises are answered too. The files
 include executed code outputs and plots, and use the same local `helpers.py` as
-their student counterpart. Student `lab.ipynb` files remain unchanged.
+their student counterpart. Rebuilding solutions leaves student `lab.ipynb` files unchanged.
 
 Solutions can be opened directly without rerunning to read the saved results.
 To rerun in Colab, upload the solution notebook and its matching helper file.

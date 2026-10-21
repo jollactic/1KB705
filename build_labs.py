@@ -3,6 +3,7 @@ from pathlib import Path
 import textwrap
 import nbformat as nbf
 from teaching_materials import system_diagram, EXAMPLES, GUIDANCE
+from design_materials import apply_design_version
 
 ROOT = Path(__file__).parent
 
@@ -76,6 +77,7 @@ energy is added or removed. Match the labels to the variables in the model below
     and one reason the model could fail. Record any revision this discussion prompted.
     '''), md('## Optional extension\n\n' + extension)]
     nb = nbf.v4.new_notebook(cells=cells, metadata={'kernelspec': {'display_name':'Python 3','language':'python','name':'python3'}, 'language_info':{'name':'python','version':'3.9'}})
+    nb = apply_design_version(nb, folder, md, code)
     nbf.write(nb, path / 'lab.ipynb')
 
 write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',

@@ -35,6 +35,10 @@ def build(execute=True):
             elif cell.cell_type == 'markdown' and cell.source.startswith('**Your interpretation:**'):
                 cell = markdown('**Solution and interpretation**\n\n' + answers['tasks'][task][1])
                 task += 1
+            elif cell.cell_type == 'markdown' and 'design_answer' in cell.metadata:
+                index = cell.metadata['design_answer']
+                cell = markdown('**Example design decision and interpretation**\n\n' + answers['tasks'][index][1])
+                task += 1
             cells.append(cell)
             if cell.cell_type == 'markdown' and cell.source.startswith('**Try a small change:**'):
                 cells.extend([markdown('### Solution to the small change\n\n' + answers['warmup'][0]),
