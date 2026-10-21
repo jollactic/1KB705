@@ -127,7 +127,10 @@ This requires the `nbclient` and `ipykernel` dependencies in `requirements.txt`.
 For environments with restricted access to the user profile, use
 `python build_solutions.py --runtime-dir .jupyter_runtime`.
 Use `--no-execute` only when intentionally generating notebooks without outputs.
-The authored answers live in `solution_content.py`; the builder transfers them
+The original worked answers live in `solution_content.py`. Question-by-question
+design discussions and additional reference comparisons live in
+`solution_discussion.py`; they explicitly address the questions in each design
+section, using the default settings. The builder transfers these answers
 into copies of the student notebooks and checks every code cell executes.
-Keep solution files, `solution_content.py`, `build_solutions.py` and the instructor
+Keep solution files, `solution_content.py`, `solution_discussion.py`, `build_solutions.py` and the instructor
 notes out of a student-only distribution if answers should be withheld.

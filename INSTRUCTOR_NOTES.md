@@ -50,6 +50,13 @@ solution compares all nine candidates: the lowest specific-energy feasible optio
 is the 80 mm pipe at speed ratio **1.0**. At ratio 0.8 it delivers only about
 2.9294 L/s and fails the 3 L/s criterion despite its lower energy use.
 
+Each main solution section now answers the individual design questions explicitly:
+the numerical evidence, selected policy, rejected alternative, margin and limits.
+These discussions are maintained in `solution_discussion.py`. Extra reference
+comparisons in the distillation and absorption solutions reproduce the alternative
+cases quoted in the prose. The written answers assume default settings and do
+not automatically change when a reader edits a parameter.
+
 | Lab | Benchmarks |
 | --- | --- |
 | 1 | At D = 0.065 m and speed ratio 1: Q = 4.03456 L/s, H = 15.58350 m, shaft power = 879.35 W. At 4000 h/year: about 3517.4 kWh/year. |

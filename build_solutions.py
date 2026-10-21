@@ -12,6 +12,7 @@ import textwrap
 import nbformat
 from nbclient import NotebookClient
 from solution_content import SOLUTIONS
+from solution_discussion import DISCUSSIONS, COMPARISON_CODE
 
 ROOT = Path(__file__).parent.resolve()
 
@@ -38,7 +39,7 @@ def build(execute=True):
                 task += 1
             elif cell.cell_type == 'markdown' and 'design_answer' in cell.metadata:
                 index = cell.metadata['design_answer']
-                cell = markdown('**Example design decision and interpretation**\n\n' + answers['tasks'][index][1])
+                cell = markdown('**Answers to the design questions — default settings**\n\n' + DISCUSSIONS[folder][index])
                 task += 1
             cells.append(cell)
             if cell.cell_type == 'markdown' and cell.source.startswith('**Try a small change:**'):
@@ -58,11 +59,23 @@ def build(execute=True):
                                 + answers['prediction'] + '\n\n'
                                 'All exercises, including the small-change example and optional '
                                 'extension, are answered below. Use the matching `helpers.py` '
-                                'from this folder. Stage counts follow the student notebook conventions.'))
+                                'from this folder. Stage counts follow the student notebook conventions.\n\n'
+                                '**Reading the answers:** The written interpretations refer to the '
+                                'printed default settings. Changing a setting updates calculated '
+                                'outputs when rerun, but does not automatically rewrite the prose. '
+                                'Alternative feasible choices can be valid when supported by evidence.'))
         # Explicit inline backend ensures plots are stored in notebook outputs.
         first_code = next(i for i, c in enumerate(cells) if c.cell_type == 'code')
         cells.insert(first_code, code('%matplotlib inline'))
         notebook.cells = cells
+        if notebook.metadata.get('teaching_variant') == 'design-support' and folder in COMPARISON_CODE:
+            position = next(i for i,c in enumerate(cells)
+                            if c.cell_type=='markdown' and c.source.startswith('## 6.'))
+            notebook.cells[position:position] = [
+                markdown('### Numerical support for the reference comparisons\n\n'
+                         'These extra calculations reproduce the alternative cases discussed '
+                         'in the answers. They use explicit reference settings.'),
+                code(COMPARISON_CODE[folder])]
         notebook.cells[0].source += '\n\n**Completed solution**'
         notebook.metadata['solution_source'] = 'build_solutions.py and solution_content.py'
         nbformat.validate(notebook)
