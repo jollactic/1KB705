@@ -106,6 +106,12 @@ def main():
     fouled = heat.outlets(area/(1/650+.0006), ch, cc, 85, 15)
     assert fouled[1] < co
     print(f'Heat base: duty={duty/1000:.3f} kW, Tho={tho:.6f} C, A={area:.6f} m²; fouled Tco={fouled[1]:.6f} C')
+    heat_candidates = heat.compare_designs()
+    assert np.isclose(min(heat_candidates,key=lambda r:r['total'])['area'],11.30152)
+    for row in heat_candidates:
+        assert row['recovery_kw']+row['trim_kw'] >= 167.2-1e-8
+        close(row['annual_kwh'],row['trim_kw']*4000)
+    assert np.isclose(min(heat.compare_designs(0),key=lambda r:r['total'])['area'],8.13059)
 
     dist = load('lab_03_distillation')
     x = np.linspace(0, 1, 50)
@@ -121,6 +127,13 @@ def main():
     D = 100*(.45-.05)/(.95-.05)
     close(D*.95+(100-D)*.05, 45)
     print(f'Distillation base: D={D:.6f} kmol/h, Rmin={rmin:.6f}, ideal stages={stages}')
+    column_candidates = dist.compare_designs()
+    feasible_columns = [r for r in column_candidates if r['feasible']]
+    close(min(feasible_columns,key=lambda r:r['total'])['multiple'],1.8)
+    for row in column_candidates:
+        close(row['duty_kw'],row['V']*30000/3600)
+        assert row['feasible'] == (row['height']<=8 and row['V']<=190)
+    assert [r['multiple'] for r in dist.compare_designs(120) if r['feasible']]==[1.8]
 
     absorb = load('lab_04_absorption')
     lmin = 100*(.03-.003)/(.03/1.5)
@@ -135,7 +148,13 @@ def main():
     close(absorb.ergun_gradient(0, .7, .025), 0)
     gradient = absorb.ergun_gradient(.8, .7, .025)
     print(f'Absorption base: Lmin={lmin:.6f}, L={solvent:.6f} kmol/h, ideal stages={count}, dry gradient={gradient:.6f} Pa/m')
-    print('All benchmark and invalid-input checks passed.')
+    absorber_candidates = absorb.compare_designs()
+    feasible_absorbers = [r for r in absorber_candidates if r['feasible']]
+    close(min(feasible_absorbers,key=lambda r:r['total'])['solvent'],243)
+    assert not absorber_candidates[0]['feasible'] and np.isnan(absorber_candidates[0]['total'])
+    assert not absorber_candidates[1]['feasible']  # nominal choice violates adverse height
+    assert not any(r['feasible'] for r in absorb.compare_designs(hetp=3))
+    print('All benchmark, design-service and invalid-input checks passed.')
 
 
 if __name__ == '__main__':

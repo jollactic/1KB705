@@ -34,6 +34,23 @@ high-flow and high-head duties. Pump curves, operating limits and installed cost
 are teaching assumptions, not equipment specifications. Shaft energy and electrical
 energy are distinguished; motor and drive losses are included.
 
+Labs 2–4 use the same design-workshop approach, with added service-boundary
+diagrams, explicit feasibility constraints, illustrative costs and a core changed-
+duty or robustness challenge:
+
+- **Heat recovery:** compare exchanger area plus electric trim heating at equal
+  delivered water flow/temperature; test clean and more-fouled conditions. The
+  selected area is used in the subsequent operating-flow envelope.
+- **Distillation:** compare six reflux policies under active-height and vapour-
+  capacity limits, with an explicitly assumed latent-heat utility model; repeat
+  at increased feed. Screen feasibility before comparing illustrative costs.
+- **Absorption:** choose solvent circulation and packed height at adverse
+  equilibrium and HETP, enforcing the same removal and a six-metre active-height
+  limit; distinguish minimum height from minimum modelled service cost.
+
+These tasks share each lab's existing six-hour budget; they do not require new
+student algorithms. All price/limit/utility assumptions are stated in the lab.
+
 ## Run locally
 
 From the repository root:
@@ -105,6 +122,12 @@ flow template retained in the common builder. `flow_solution.py` holds its curre
 question-by-question instructor answers. Use `python build_labs.py --lab lab_01_flow`
 and `python build_solutions.py --lab lab_01_flow` for a targeted rebuild.
 
+`workshop_extensions.py` supplies the core comparison prompts, diagrams and
+analysis cells for Labs 2–4; their numerical design comparisons live in each
+lab's own `helpers.py`. `workshop_solutions.py` adds the matching discussions
+and updated recommendation openings. Use `--lab` with the corresponding folder
+to rebuild only one lab and its solution.
+
 `build_labs.py` and `teaching_materials.py` hold the common cases, diagrams and
 worked examples. `design_materials.py` replaces implementation exercises with
 design questions and settings; `design_calculations.py` supplies the analysis
@@ -149,3 +172,4 @@ section, using the default settings. The builder transfers these answers
 into copies of the student notebooks and checks every code cell executes.
 Keep solution files, `flow_solution.py`, `solution_content.py`, `solution_discussion.py`, `build_solutions.py` and the instructor
 notes out of a student-only distribution if answers should be withheld.
+Also withhold `workshop_solutions.py` from a student-only distribution.

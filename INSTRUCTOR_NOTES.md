@@ -82,12 +82,24 @@ opposite ends of a countercurrent exchanger. Local terminal driving forces must
 remain positive. A fixed-area fouled exchanger has a lower duty, rather than the
 same duty at a different LMTD chosen arbitrarily. With constant design temperatures,
 the required fouled-sized area scales as U_clean/U_fouled: about 11.30 m² here.
+The new equal-service comparison supplies any shortfall with an ideal electric
+trim heater. At default resistance, areas 8.13059/11.30152/14 m² have modelled
+ten-year totals of about €109856/€11911/€13800; the middle candidate wins.
+At zero added resistance the smallest wins; at 0.001 m² K/W the largest wins.
+The subsequent cold-flow envelope uses the selected discrete area, not an
+unrelated area. Small residual trim duty near the exact target is rounding.
 
 Lab 3: the final horizontal step generally overshoots xB. Eleven stages is the
 deliberately conservative integer count, not an interpolated value. The total
 condenser is not a stage; the equilibrium partial reboiler is. Subtract the reboiler
 before converting ideal trays to actual trays. Constant-alpha equilibrium lacks
 azeotropes; applying it to a real mixture without checking VLE is inappropriate.
+In the new constraint/cost table, ratios 1.1 and 1.5 fail the 8 m active-height
+limit, while ratio 3.0 fails the 190 kmol/h vapour limit. Ratio 1.8 is the
+least-cost eligible supplied candidate: 11 stages, 16 trays, 7.2 m, V=152.612
+kmol/h. At 120 kmol/h feed it remains eligible with V=183.134 kmol/h; ratio
+2.0 then fails capacity. Latent heat and cost parameters are synthetic, not
+a replacement for enthalpy data or vendor hydraulic calculations.
 
 Lab 4: use mole ratios throughout, not a mixture of ratios and fractions.
 The staircase starts at the top, and the final vertical move may exceed Yin.
@@ -95,6 +107,13 @@ For fresh solvent, the absorption factor A = L/(mG) gives the independent check
 Y_(N+1)/Yout = 1 + A + ... + A^N. HETP and tray efficiency represent different
 equipment models. The dry Ergun example is a screening exercise in model limits;
 it is not a pressure-drop or flooding design method for irrigated industrial packing.
+The new robust packed-height challenge rejects 148.5 kmol/h solvent on adverse
+equilibrium feasibility and 202.5 kmol/h on adverse height. The least-cost
+eligible supplied option is 243 kmol/h: four nominal/five adverse contacts,
+6 m at HETP=1.2 m, modelled total €201800. It has no spare active height
+under that assumption. At 270 and 337.5 kmol/h, smaller active heights cost
+more under the assumed annual solvent-service allowance. Wet hydraulics remain
+unverified in every case. Expanded answers are in `workshop_solutions.py`.
 
 ## Acceptance checks
 

@@ -91,6 +91,9 @@ energy is added or removed. Match the labels to the variables in the model below
     if folder == 'lab_01_flow':
         from flow_workshop import adapt_flow_notebook
         nb = adapt_flow_notebook(nb, md, code)
+    else:
+        from workshop_extensions import enrich_workshop
+        nb = enrich_workshop(nb, folder, md, code)
     nbf.write(nb, path / 'lab.ipynb')
 
 write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',

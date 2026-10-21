@@ -33,6 +33,13 @@ def build(execute=True,lab=None):
         if folder == 'lab_01_flow':
             from flow_solution import FLOW_ANSWERS, FLOW_DISCUSSIONS
             answers, discussions = FLOW_ANSWERS, FLOW_DISCUSSIONS
+        else:
+            from workshop_solutions import EXTRA_DISCUSSION, RECOMMENDATION_OPENINGS
+            discussions = list(discussions)
+            discussions[2] += '\n\n' + EXTRA_DISCUSSION[folder]
+            answers = dict(answers)
+            original = answers['recommendation'].split('\n\n',1)
+            answers['recommendation'] = RECOMMENDATION_OPENINGS[folder] + '\n\n' + original[1]
         student = ROOT / folder / 'lab.ipynb'
         notebook = copy.deepcopy(nbformat.read(student, as_version=4))
         cells = []
