@@ -36,7 +36,7 @@ look for a requirement, at least two numerical facts, a rejected alternative,
 and a reason new evidence might change the choice. The saved solution notebooks
 illustrate the base settings; other feasible, well-supported choices are valid.
 Require students to rerun downstream cells after editing a setting. The default
-settings reproduce the original base cases and the reference recommendations.
+settings reproduce the reference recommendations for the current editions.
 
 ## Benchmark results
 
@@ -45,30 +45,37 @@ These values use the stated synthetic base cases and full-final-stage convention
 Completed, executed reference notebooks are saved as `lab_solution.ipynb` in each
 lab folder. They include the small-change exercises, all core tasks, written
 recommendations and optional extensions. Rebuild with `python build_solutions.py`.
-The student notebooks are not modified by that command. In particular, the flow
-solution compares all nine candidates: the lowest specific-energy feasible option
-is the 80 mm pipe at speed ratio **1.0**. At ratio 0.8 it delivers only about
-2.9294 L/s and fails the 3 L/s criterion despite its lower energy use.
+The student notebooks are not modified by that command. Lab 1 now uses variable
+pump efficiency and motor/drive losses, compares diameters at exactly 3 L/s using
+speed control, and includes series/parallel pumps in its core. At default costs,
+50 mm minimizes the ten-year pipe-plus-electricity total; 80 mm minimizes
+electricity alone. This supersedes the previous uncontrolled-flow, constant-70%
+efficiency comparison.
 
 Each main solution section now answers the individual design questions explicitly:
 the numerical evidence, selected policy, rejected alternative, margin and limits.
-These discussions are maintained in `solution_discussion.py`. Extra reference
+These discussions are maintained in `solution_discussion.py` for Labs 2–4 and
+`flow_solution.py` for Lab 1. Extra reference
 comparisons in the distillation and absorption solutions reproduce the alternative
 cases quoted in the prose. The written answers assume default settings and do
 not automatically change when a reader edits a parameter.
 
 | Lab | Benchmarks |
 | --- | --- |
-| 1 | At D = 0.065 m and speed ratio 1: Q = 4.03456 L/s, H = 15.58350 m, shaft power = 879.35 W. At 4000 h/year: about 3517.4 kWh/year. |
+| 1 | Uncontrolled 65 mm, speed 1: Q = 4.03456 L/s, electrical input = 1228.45 W; outside the assumed band. At controlled 3 L/s, 50/65/80 mm use 3549.47/2764.07/2581.29 kWh/year. Ten-year costs at €0.20/kWh: €13098.94/14028.14/17162.57. Duty A: parallel, 1436.91 W total. Duty B: series, 2479.49 W total. |
 | 2 | Duty = 167.2 kW, hot outlet = 48.3333 °C, clean area = 8.13059 m². At added resistance 0.0006 m² K/W and fixed clean-sized area: cold outlet = 49.0093 °C. |
 | 3 | D = 44.4444 kmol/h, B = 55.5556 kmol/h, R_min = 1.35209. At R = 2.5: 11 full ideal stages including the reboiler; ten ideal trays. At E_o = 0.65: 16 installed trays and 7.2 m active-height estimate. |
 | 4 | L_min = 135 kmol/h; selected L = 202.5 kmol/h; X_out = 0.0133333; removal = 2.7 kmol/h. Five full ideal stages. At E_o = 0.60: nine trays, 4.05 m active height. Packed height = 3–6 m; illustrative dry gradient = 47.9272 Pa/m, giving about 144–288 Pa. |
 
-Lab 1: a useful bisection bracket is 0.001–0.005 m³/s for the base case. Do not
-reuse a bracket without checking its signs for each alternative. Some candidate
-pump/pipe combinations fail the minimum-flow criterion. At fixed throughput,
-students should distinguish an operating-point comparison from a controlled-flow
-comparison. Efficiency is held constant only to isolate the hydraulic tradeoff.
+Lab 1: the synthetic head and shaft-input curves define pump efficiency jointly.
+Motor and drive efficiencies remain constant at 0.90 and 0.96. Neither an
+intersection nor a low price makes a point eligible outside the assumed speed
+or per-pump BEP band. Pair powers must sum both running pumps. The 80 mm line
+for changed duties is deliberate: it is not the selected default 50 mm base line.
+The declared six-hour allocation is 30/60/75/90/60/45 minutes, including a break.
+Separate procurement checks from the synthetic feasibility screen. The original
+3517 kWh figure was shaft energy under a different efficiency assumption and
+must not be reused as electrical energy in this edition.
 
 Lab 2: outlet temperatures can cross when comparing the two outlet streams at
 opposite ends of a countercurrent exchanger. Local terminal driving forces must

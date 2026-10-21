@@ -25,8 +25,14 @@ def code(source):
     return nbformat.v4.new_code_cell(textwrap.dedent(source).strip())
 
 
-def build(execute=True):
+def build(execute=True,lab=None):
     for folder, answers in SOLUTIONS.items():
+        if lab and folder != lab:
+            continue
+        discussions = DISCUSSIONS[folder]
+        if folder == 'lab_01_flow':
+            from flow_solution import FLOW_ANSWERS, FLOW_DISCUSSIONS
+            answers, discussions = FLOW_ANSWERS, FLOW_DISCUSSIONS
         student = ROOT / folder / 'lab.ipynb'
         notebook = copy.deepcopy(nbformat.read(student, as_version=4))
         cells = []
@@ -39,7 +45,7 @@ def build(execute=True):
                 task += 1
             elif cell.cell_type == 'markdown' and 'design_answer' in cell.metadata:
                 index = cell.metadata['design_answer']
-                cell = markdown('**Answers to the design questions — default settings**\n\n' + DISCUSSIONS[folder][index])
+                cell = markdown('**Answers to the design questions — default settings**\n\n' + discussions[index])
                 task += 1
             cells.append(cell)
             if cell.cell_type == 'markdown' and cell.source.startswith('**Try a small change:**'):
@@ -97,6 +103,7 @@ def build(execute=True):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--no-execute', action='store_true')
+    parser.add_argument('--lab',help='Build only this lab folder')
     parser.add_argument('--runtime-dir', type=Path,
                         help='Optional writable directory for Jupyter/IPython execution state')
     args = parser.parse_args()
@@ -106,4 +113,4 @@ if __name__ == '__main__':
             directory = args.runtime_dir.resolve()/child
             directory.mkdir(parents=True, exist_ok=True)
             os.environ[variable] = str(directory)
-    build(execute=not args.no_execute)
+    build(execute=not args.no_execute,lab=args.lab)

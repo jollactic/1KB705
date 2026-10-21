@@ -10,12 +10,12 @@ ROOT = Path(__file__).parent.resolve()
 # Each tuple changes an actual editable section; later cells must use the change.
 SCENARIOS = {
     'lab_01_flow': [
-        ('smaller pipe and higher duty', {0:'diameter = .050', 1:'required_flow_Lps = 4.5',
-                                        2:'selected_diameter = .080\nselected_speed = 1.1'},
-         'assert diameter == .050\nassert chosen_D == .080 and chosen_speed == 1.1\nassert chosen_result[0]*1000 >= required_flow_Lps'),
-        ('no feasible candidate', {1:'required_flow_Lps = 6.0',
-                                   2:'selected_diameter = .050\nselected_speed = .8'},
-         'assert not feasible_designs\nassert not robust\nassert chosen_result[0]*1000 < required_flow_Lps')],
+        ('higher electricity price changes diameter choice',
+         {1:'selected_diameter = .065',2:'electricity_price = .40'},
+         'assert chosen["flow"] == .003\nassert diameters[best_index] == .065\nassert chosen["feasible"]'),
+        ('higher fixed duty has no feasible single-pump candidate',
+         {1:'required_flow_Lps = 6.0'},
+         'assert not feasible_mask.any()\nassert best_index is None\nassert arrangement_results[("A","parallel")]["feasible"]')],
     'lab_02_heat': [
         ('no fouling allowance', {2:'design_R = 0.0'},
          'assert np.isclose(fouled_sized_area,area)\nassert np.isclose(enlarged_design[1],55)'),

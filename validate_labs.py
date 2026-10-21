@@ -66,8 +66,30 @@ def main():
     q = (lo+hi)/2
     assert abs(residual(q)) < 1e-8
     head = float(flow.pump_head(q))
-    power = 998*9.81*q*head/.7
-    print(f'Flow base: Q={1000*q:.6f} L/s, H={head:.6f} m, shaft={power:.6f} W')
+    point = flow.performance(q)
+    close(point['hydraulic'],998*9.81*q*head)
+    close(point['electrical']*.90*.96,point['shaft'])
+    assert not point['recommended']
+    assert flow.performance(0)['shaft'] > 0 and flow.performance(0)['efficiency'] == 0
+    grid = np.linspace(0,flow.RUNOUT_FLOW,1000)
+    eta = flow.performance(grid)['efficiency']
+    assert np.all((eta >= 0) & (eta <= 1))
+    # Affinity scaling at corresponding points must preserve efficiency and scale power cubically.
+    rated, slower = flow.performance(.003), flow.performance(.003*.8,.8)
+    close(slower['head'],rated['head']*.8**2)
+    close(slower['shaft'],rated['shaft']*.8**3)
+    close(slower['efficiency'],rated['efficiency'])
+    for arrangement in ['single','series','parallel']:
+        row = flow.design_at_flow(.003,.065,arrangement=arrangement)
+        close(flow.arrangement_head(.003,row['speed'],arrangement),row['head'])
+        close(row['shaft']*row['efficiency'],998*9.81*.003*row['head'])
+        close(row['annual_kwh'],row['specific_kwh']*.003*3600*4000)
+    assert flow.design_at_flow(.006,.08,arrangement='parallel')['feasible']
+    assert not flow.design_at_flow(.006,.08)['feasible']
+    assert flow.design_at_flow(.003,.08,rise=55,arrangement='series')['feasible']
+    assert not flow.design_at_flow(.003,.08,rise=55)['feasible']
+    rejects(flow.performance,flow.RUNOUT_FLOW*1.01)
+    print(f'Flow uncontrolled base: Q={1000*q:.6f} L/s, H={head:.6f} m, electrical={point["electrical"]:.6f} W')
 
     heat = load('lab_02_heat')
     close(heat.lmtd(20, 20), 20)

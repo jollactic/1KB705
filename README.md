@@ -9,7 +9,7 @@ No Python algorithms, loops or plotting code need to be written or assessed.
 
 | Folder | Design problem | Principal syllabus alignment | Student decisions |
 | --- | --- | --- | --- |
-| `lab_01_flow` | Water-transfer line and pump | Flowing fluids, pressure losses, pumps | Select pipe/speed, check throughput margin and energy |
+| `lab_01_flow` | Water-transfer line and pump | Flowing fluids, pressure losses, pumps | Select diameter/speed at fixed delivery, compare lifecycle cost, choose series/parallel arrangements |
 | `lab_02_heat` | Heat recovery and fouling | Heat exchangers, energy balances | Choose fouling allowance, area and operating flow |
 | `lab_03_distillation` | Binary separation | Material balances, graphical/numerical stages, efficiency | Choose reflux/purity policy and tray-height assumptions |
 | `lab_04_absorption` | Solvent rate and column size | Absorption, stages, column height, porous beds | Choose solvent policy, compare internals and robustness |
@@ -25,6 +25,14 @@ separate editable design settings. Students record requirements, numerical
 evidence, a decision and what could change it. They keep at least one rejected
 design and explain why it fails or is less attractive.
 The diagrams are embedded in the notebooks, so no image downloads are required.
+
+Lab 1 additionally plots synthetic head, pump efficiency, shaft input and electrical
+input with BEP and an assumed operating band. Its core compares diameters at
+exactly 3 L/s using speed control, then compares illustrative pipe-plus-electricity
+costs. A short core task compares single, series and parallel pumps for separate
+high-flow and high-head duties. Pump curves, operating limits and installed costs
+are teaching assumptions, not equipment specifications. Shaft energy and electrical
+energy are distinguished; motor and drive losses are included.
 
 ## Run locally
 
@@ -91,6 +99,12 @@ python validate_labs.py
 python validate_design_labs.py
 ```
 
+`flow_workshop.py` is the current Lab 1 content source; its numerical routines
+and plotting functions live in `lab_01_flow/helpers.py`. It overrides the older
+flow template retained in the common builder. `flow_solution.py` holds its current
+question-by-question instructor answers. Use `python build_labs.py --lab lab_01_flow`
+and `python build_solutions.py --lab lab_01_flow` for a targeted rebuild.
+
 `build_labs.py` and `teaching_materials.py` hold the common cases, diagrams and
 worked examples. `design_materials.py` replaces implementation exercises with
 design questions and settings; `design_calculations.py` supplies the analysis
@@ -127,10 +141,11 @@ This requires the `nbclient` and `ipykernel` dependencies in `requirements.txt`.
 For environments with restricted access to the user profile, use
 `python build_solutions.py --runtime-dir .jupyter_runtime`.
 Use `--no-execute` only when intentionally generating notebooks without outputs.
-The original worked answers live in `solution_content.py`. Question-by-question
+Lab 1's current worked answers live in `flow_solution.py`. The original worked
+answers for the other labs live in `solution_content.py`. Question-by-question
 design discussions and additional reference comparisons live in
 `solution_discussion.py`; they explicitly address the questions in each design
 section, using the default settings. The builder transfers these answers
 into copies of the student notebooks and checks every code cell executes.
-Keep solution files, `solution_content.py`, `solution_discussion.py`, `build_solutions.py` and the instructor
+Keep solution files, `flow_solution.py`, `solution_content.py`, `solution_discussion.py`, `build_solutions.py` and the instructor
 notes out of a student-only distribution if answers should be withheld.

@@ -7,8 +7,16 @@ from teaching_materials import system_diagram, EXAMPLES, GUIDANCE
 from design_materials import apply_design_version
 
 ROOT = Path(__file__).parent
+SELECTED_LAB = None
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--lab',help='Build only this lab folder')
+    SELECTED_LAB = parser.parse_args().lab
 
 def write_lab(folder, title, intro, theory, starter, tasks, extension):
+    if SELECTED_LAB and folder != SELECTED_LAB:
+        return
     path = ROOT / folder
     path.mkdir(exist_ok=True)
     # cleandoc handles a heading on the opening line followed by indented text.
@@ -80,6 +88,9 @@ energy is added or removed. Match the labels to the variables in the model below
     '''), md('## Optional extension\n\n' + extension)]
     nb = nbf.v4.new_notebook(cells=cells, metadata={'kernelspec': {'display_name':'Python 3','language':'python','name':'python3'}, 'language_info':{'name':'python','version':'3.9'}})
     nb = apply_design_version(nb, folder, md, code)
+    if folder == 'lab_01_flow':
+        from flow_workshop import adapt_flow_notebook
+        nb = adapt_flow_notebook(nb, md, code)
     nbf.write(nb, path / 'lab.ipynb')
 
 write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
@@ -225,4 +236,4 @@ write_lab('lab_04_absorption', 'Lab 4 — Gas absorption and column height',
     'Compare the stage model with a continuous transfer-unit model. State which additional mass-transfer coefficients and interfacial-area data are needed.')
 
 if __name__ == '__main__':
-    print('Built four student notebooks.')
+    print('Built student notebooks' + (f': {SELECTED_LAB}' if SELECTED_LAB else ': all four') + '.')
