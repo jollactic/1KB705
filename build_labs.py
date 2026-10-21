@@ -100,6 +100,12 @@ write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
     approximation. The transition region 2300–4000 is deliberately rejected: flag
     those cases instead of silently applying a correlation.
     The illustrative pump curve is $H_p=s^2H_0-aQ^2$, with speed ratio $s$.
+    The supplied equation represents an illustrative pump characteristic. Real
+    pump characteristics are normally obtained from manufacturer test data; a
+    fitted equation can then be used for numerical calculations. Here, $H_0=40$
+    m and $a=1.5\times10^6$ s²/m⁵ are synthetic teaching values, not a fit to
+    measurements from a particular pump. Use $Q$ in m³/s. The speed ratio is
+    $s=N/N_0$; the speed dependence follows approximate pump affinity scaling.
     Hydraulic power is $\rho gQH$ and shaft power is hydraulic power divided by efficiency.
     This curve is a teaching model; it does not establish NPSH margin or a safe pump envelope.
     ''', '''
