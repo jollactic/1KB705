@@ -87,6 +87,12 @@ write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
     $v=4Q/(\pi D^2)$, $Re=\rho vD/\mu$.
     Use the **Darcy** friction factor (four times the Fanning factor):
     $H_s=\Delta z+(fL/D+\sum K)v^2/(2g)$.
+    For this teaching case, the **combined dimensionless loss coefficient for
+    the bends and valves has been determined to be $\sum K=8$**, referenced to
+    the mean velocity in the connecting pipe. This is a supplied case value,
+    not the number of fittings. Their total head loss is
+    $h_{\mathrm{fittings}}=(\sum K)v^2/(2g)=8v^2/(2g)$, in metres of fluid.
+    It is added to the straight-pipe friction loss and the static elevation rise.
     Laminar: $f=64/Re$. For turbulent flow the helper uses the explicit Haaland
     approximation. The transition region 2300–4000 is deliberately rejected: flag
     those cases instead of silently applying a correlation.
@@ -96,6 +102,7 @@ write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
     ''', '''
     rho, mu, g = 998.0, 1.0e-3, 9.81
     length, rise, roughness, K = 120.0, 12.0, 4.5e-5, 8.0
+    # K is the determined total for bends and valves (dimensionless), not their count.
     diameter = 0.065
     H0, a, efficiency = 40.0, 1.5e6, 0.70  # a has units s²/m⁵
     Q = np.linspace(0.001, 0.007, 150)  # m³/s

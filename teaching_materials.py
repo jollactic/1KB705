@@ -41,7 +41,7 @@ def system_diagram(folder):
         arrow([(2.3, 1.05), (3.1, 1.05)])
         arrow([(3.9, 1.05), (6.5, 1.05), (6.5, 2.55), (8.6, 2.55)])
         text(3.5, .3, 'Pump adds head Hₚ')
-        text(6.1, 3.3, 'Pipe: L, D, roughness\nBends / valve: ΣK')
+        text(6.1, 3.3, 'Pipe: L, D, roughness\nBends / valves: ΣK = 8')
         text(5.3, .55, 'Flow Q →')
         text(8.6, 1.25, 'Static rise Δz = z₂ − z₁\nPump head = rise + losses')
     elif folder == 'lab_02_heat':
@@ -97,6 +97,10 @@ EXAMPLES = {
 Follow the diagram from Tank A through the pump and pipe to Tank B. The pump
 must supply both the elevation rise and the losses. Start by testing **one** flow;
 it is not yet the operating point. The code below prints each part separately.
+For this case, the combined dimensionless loss coefficient for the bends and
+valves has been determined to be **ΣK = 8**, based on the pipe velocity.
+Thus `ex_fitting_loss = 8.0 * ex_v**2 / (2 * 9.81)` is their total head loss
+in metres of fluid; 8 is a supplied coefficient, not a count of fittings.
 At 3 L/s you should find a velocity near 0.904 m/s and a system head near 14.0 m.
 The pump supplies 26.5 m, so the actual intersection should lie at a higher flow.
 ''', '''
@@ -106,7 +110,7 @@ The pump supplies 26.5 m, so the actual intersection should lie at a higher flow
     ex_Re = 998.0 * ex_v * ex_D / 0.001
     ex_f = float(h.friction_factor(ex_Re, 4.5e-5 / ex_D))
     ex_pipe_loss = ex_f * ex_L / ex_D * ex_v**2 / (2 * 9.81)
-    ex_fitting_loss = 8.0 * ex_v**2 / (2 * 9.81)
+    ex_fitting_loss = 8.0 * ex_v**2 / (2 * 9.81)  # determined total ΣK = 8; head loss in m
     ex_required = ex_rise + ex_pipe_loss + ex_fitting_loss
     ex_available = float(h.pump_head(ex_Q))
     print(f"Velocity = {ex_v:.3f} m/s; Re = {ex_Re:.0f}; Darcy f = {ex_f:.4f}")
