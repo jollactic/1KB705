@@ -5,6 +5,7 @@ import textwrap
 import nbformat as nbf
 from teaching_materials import system_diagram, EXAMPLES, GUIDANCE
 from design_materials import apply_design_version
+from lab_inputs import MAIN_INPUTS
 
 ROOT = Path(__file__).parent
 SELECTED_LAB = None
@@ -17,6 +18,7 @@ if __name__ == '__main__':
 def write_lab(folder, title, intro, theory, starter, tasks, extension):
     if SELECTED_LAB and folder != SELECTED_LAB:
         return
+    theory = inspect.cleandoc(theory) + '\n\n' + MAIN_INPUTS[folder]
     path = ROOT / folder
     path.mkdir(exist_ok=True)
     # cleandoc handles a heading on the opening line followed by indented text.
@@ -146,6 +148,10 @@ write_lab('lab_02_heat', 'Lab 2 — Heat recovery with a countercurrent exchange
 
     Steady operation, no heat loss or phase change, constant heat capacities and overall
     heat-transfer coefficient; ideal countercurrent flow, so the LMTD correction factor is 1.
+    For the main case, assume the clean overall coefficient is
+    $U_{clean}=650$ W/(m² K), based on heat-transfer area. It is a supplied
+    teaching value, not inferred from the inlet temperatures. Added fouling
+    resistance is introduced explicitly in the design comparison.
     $C_h=\dot m_hc_{p,h}$, $C_c=\dot m_cc_{p,c}$, and
     $\dot Q=C_h(T_{h,in}-T_{h,out})=C_c(T_{c,out}-T_{c,in})$.
     $\Delta T_1=T_{h,in}-T_{c,out}$, $\Delta T_2=T_{h,out}-T_{c,in}$.

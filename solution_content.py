@@ -237,7 +237,7 @@ SOLUTIONS['lab_02_heat'] = {
             if min(warm_deltas) <= 0:
                 print(f"Target {warm_target:.0f} °C: infeasible; terminal differences = {warm_deltas}")
             else:
-                warm_area = warm_duty/(650*h.lmtd(*warm_deltas))
+                warm_area = warm_duty/(ex_U*h.lmtd(*warm_deltas))
                 print(f"Target {warm_target:.0f} °C: duty {warm_duty/1000:.2f} kW, area {warm_area:.3f} m²")
         '''),
     'tasks': [(

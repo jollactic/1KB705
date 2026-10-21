@@ -27,6 +27,10 @@ Each folder contains `lab.ipynb` and an independent `helpers.py`. There are no
 cross-lab imports, API keys, remote data requirements, or repository-specific URLs.
 
 Each notebook starts with a labelled system diagram and a small worked example.
+Worked examples and main cases specify their inputs, units and assumptions
+separately. Given values, chosen settings and calculated results are distinguished.
+`lab_inputs.py` maintains the main-case reference tables; example data and named
+constants live in `teaching_materials.py` (Lab 00 uses `balances_intro.py`).
 Students first change one parameter, predict the result, and explain what they
 observe; they then use the supplied analyses for the main design problem.
 Implementation cells are collapsed where the notebook viewer supports it, with

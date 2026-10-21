@@ -60,7 +60,8 @@ C,wC = h.mix_streams(A,wA,B,wB)
 print(f'Outlet C={C:.2f} kg/h; salt fraction={wC:.5f} kg/kg ({wC*100:.2f} wt%)')
 print(f'Salt in={A*wA+B*wB:.2f} kg/h; salt out={C*wC:.2f} kg/h')
 print(f'Total residual={A+B-C:.3e} kg/h; salt residual={A*wA+B*wB-C*wC:.3e} kg/h')
-water_needed=A*wA/.05-A
+target_salt_fraction = .05  # stated 5 wt% product target, kg salt/kg solution
+water_needed=A*wA/target_salt_fraction-A
 print(f'Water feed for 5 wt% target: {water_needed:.2f} kg/h')
 ''',r'''
 **Boundary and equations.** Both inlets and the single outlet cross the mixer
@@ -98,8 +99,9 @@ These are mass balances only. What is still missing to calculate evaporation
 heat? Why should concentrating to a value below the feed fraction be rejected
 for this pure-water-removal operation?
 ''','''product_fraction = 0.20 #@param {type:"number"}''','''
-F,wF = 100.,.08
-branch1,branch2 = .30*F,.70*F
+F,wF = 100.,.08  # stated original mixer outlet: kg/h, kg salt/kg solution
+split_fraction = .30  # supplied branch-one mass-flow fraction
+branch1,branch2 = split_fraction*F,(1-split_fraction)*F
 print(f'Splitter: {branch1:.1f} and {branch2:.1f} kg/h; both {wF*100:.1f} wt% salt')
 P,V=h.evaporate(F,wF,product_fraction)
 print(f'Evaporator product={P:.3f} kg/h; pure-water vapour={V:.3f} kg/h')
@@ -147,14 +149,15 @@ Explain why outlet temperature must lie between the inlet temperatures.
 ''','''heated_flow = 2.0 #@param {type:"number"}
 inlet_temperature = 20.0 #@param {type:"number"}
 target_temperature = 50.0 #@param {type:"number"}''','''
-duty=h.heating_duty(heated_flow,4180.,inlet_temperature,target_temperature)
+water_cp = 4180.0  # supplied constant specific heat capacity, J/(kg K)
+duty=h.heating_duty(heated_flow,water_cp,inlet_temperature,target_temperature)
 print(f'Heat supplied={duty:.1f} W = {duty/1000:.3f} kW')
 print(f'Heat supplied over 2 hours={duty/1000*2:.3f} kWh')
 mixed_temperature=h.mixing_temperature(.5,80.,1.5,20.)
 print(f'Adiabatic mixed outlet: 2 kg/s at {mixed_temperature:.3f} °C')
 reference=20.
-energy_in=.5*4180*(80-reference)+1.5*4180*(20-reference)
-energy_out=2*4180*(mixed_temperature-reference)
+energy_in=.5*water_cp*(80-reference)+1.5*water_cp*(20-reference)
+energy_out=2*water_cp*(mixed_temperature-reference)
 print(f'Mixer energy residual={energy_in-energy_out:.3e} W')
 ''',r'''
 **Heater balance.** With the stated simplifications,
@@ -189,12 +192,14 @@ At density 1000 kg/m³, what volume corresponds to the ten-minute inventory?
 The supplied plot stops at the first capacity limit, not after it.
 ''','''tank_outflow = 1.5 #@param {type:"number"}''','''
 initial_mass,inflow,capacity=50.,2.,400.
+evaluation_seconds = 10*60  # ten-minute inventory check, converted to seconds
+water_density = 1000.0  # supplied volume-conversion density, kg/m³
 net=inflow-tank_outflow
 limit=(capacity-initial_mass)/net if net>0 else (initial_mass/(-net) if net<0 else np.inf)
 print(f'Net accumulation={net:.3f} kg/s')
-if 600 <= limit:
-    mass10=float(h.tank_inventory(initial_mass,inflow,tank_outflow,600))
-    print(f'At 10 min: inventory={mass10:.2f} kg; volume={mass10/1000:.3f} m³')
+if evaluation_seconds <= limit:
+    mass10=float(h.tank_inventory(initial_mass,inflow,tank_outflow,evaluation_seconds))
+    print(f'At 10 min: inventory={mass10:.2f} kg; volume={mass10/water_density:.3f} m³')
 else:
     print('A boundary limit is reached before ten minutes; constant-flow continuation is invalid.')
 print(f'First boundary limit: {limit/60:.3f} min' if np.isfinite(limit) else 'No filling/emptying boundary reached at equal flows.')
@@ -259,6 +264,11 @@ heat or work across the boundary. The terms depend on the chosen boundary.
 **Do not confuse:** kg (inventory) with kg/s (flow); mass fraction with mass
 flow; kW (power) with kWh (energy). A balance residual of zero checks arithmetic
 and consistency, but does not prove the assumptions match real equipment.
+
+**Data convention:** Numbers stated in each problem are supplied inputs or
+explicit assumptions; outlet properties and duties are calculated results.
+The salt fractions are kg salt/kg solution. Drawings show the printed default
+case; when changing a setting, update your own stream labels accordingly.
 
 **Prediction:** If water is added to a salt solution without salt loss, will
 salt mass flow, salt fraction, or both change? Write your prediction before running.

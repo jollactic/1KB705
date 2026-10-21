@@ -27,6 +27,14 @@ hazardous-material handling is part of these exercises.
 
 ## Common facilitation
 
+Before using an example, have students identify every supplied input, its units
+and whether it is a given operating condition, assumed property or chosen setting.
+The example/main-case tables distinguish these from calculated outputs. In
+particular, U = 650 W/(m² K) is an assumed clean overall coefficient, alpha = 2.4
+is a dimensionless equilibrium assumption, and cp in J/(kg K) differs from a
+stream capacity rate in W/K. No values should need guessing from a bare literal
+or an undisclosed helper default. Preserve this convention when revising cases.
+
 Start with a flowsheet and a prediction. At 90 minutes, check one hand calculation
 and the student's units before discussing a recommendation. At three hours,
 require a feasible candidate and its operating margin. If a pair is behind,
