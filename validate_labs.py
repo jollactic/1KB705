@@ -7,12 +7,13 @@ import subprocess
 import sys
 import nbformat
 import numpy as np
+from course_structure import ROLES
 
 ROOT = Path(__file__).parent.resolve()
 
 
 def load(folder):
-    spec = importlib.util.spec_from_file_location(folder, ROOT/folder/'helpers.py')
+    spec = importlib.util.spec_from_file_location(folder.replace('/','_'), ROOT/folder/'helpers.py')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -31,7 +32,7 @@ def rejects(function, *args):
 
 
 def main():
-    for folder in sorted(ROOT.glob('lab_*')):
+    for folder in [ROOT/path for path in ROLES]:
         if not folder.is_dir():
             continue
         notebook = nbformat.read(folder/'lab.ipynb', as_version=4)
@@ -45,7 +46,7 @@ def main():
             raise AssertionError(f'{folder.name}: {result.stderr}')
         print(f'{folder.name}: valid notebook; supplied code executes')
 
-    intro = load('lab_00')
+    intro = load('preparation/lab_00_balances')
     total,fraction = intro.mix_streams(80,.1,20)
     close(total,100); close(total*fraction,8)
     product,vapour = intro.evaporate(100,.08,.2)
@@ -57,7 +58,7 @@ def main():
     rejects(intro.tank_inventory,50,2,2.5,600)
     print('Lab 00: basic balances, conservation and model-domain checks passed')
 
-    flow = load('lab_01_flow')
+    flow = load('main_labs/lab_01_flow')
     close(flow.friction_factor(1000, 0), 0.064)
     rejects(flow.friction_factor, 3000, 0)
     # Independent implicit Colebrook solution, compare approximate Haaland within 2%.
@@ -103,7 +104,7 @@ def main():
     rejects(flow.performance,flow.RUNOUT_FLOW*1.01)
     print(f'Flow uncontrolled base: Q={1000*q:.6f} L/s, H={head:.6f} m, electrical={point["electrical"]:.6f} W')
 
-    heat = load('lab_02_heat')
+    heat = load('optional_labs/lab_02_heat')
     close(heat.lmtd(20, 20), 20)
     rejects(heat.lmtd, -1, 20)
     close(heat.countercurrent_effectiveness(2, 1), 2/3)
@@ -125,7 +126,7 @@ def main():
         close(row['annual_kwh'],row['trim_kw']*4000)
     assert np.isclose(min(heat.compare_designs(0),key=lambda r:r['total'])['area'],8.13059)
 
-    dist = load('lab_03_distillation')
+    dist = load('main_labs/lab_03_distillation')
     x = np.linspace(0, 1, 50)
     assert np.allclose(dist.inverse_equilibrium(dist.equilibrium(x)), x)
     rmin = dist.minimum_reflux(.45, .95)
@@ -147,7 +148,7 @@ def main():
         assert row['feasible'] == (row['height']<=8 and row['V']<=190)
     assert [r['multiple'] for r in dist.compare_designs(120) if r['feasible']]==[1.8]
 
-    absorb = load('lab_04_absorption')
+    absorb = load('optional_labs/lab_04_absorption')
     lmin = 100*(.03-.003)/(.03/1.5)
     solvent = 1.5*lmin
     count, points = absorb.stage_count(100, solvent, .03, .003)

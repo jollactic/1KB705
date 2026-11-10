@@ -3,7 +3,7 @@
 Used by the design-focused notebook builder. Students run these cells as supplied.
 """
 
-CALCULATIONS = {'lab_01_flow': ['\n'
+CALCULATIONS = {'main_labs/lab_01_flow': ['\n'
                  '        trial_q = .003\n'
                  '        velocity = 4*trial_q/(np.pi*diameter**2)\n'
                  '        reynolds = rho*velocity*diameter/mu\n'
@@ -130,7 +130,7 @@ CALCULATIONS = {'lab_01_flow': ['\n'
                  '        print(f"Robust to stated roughness range: D={robust_choice[0]:.3f} m, '
                  'speed={robust_choice[1]:.1f}")\n'
                  '        '],
- 'lab_02_heat': ['\n'
+ 'optional_labs/lab_02_heat': ['\n'
                  '        cold_duty = mc*cpc*(Tco_target-Tci)\n'
                  '        independent_hot_out = Thi-cold_duty/(mh*cph)\n'
                  '        dt1, dt2 = Thi-Tco_target, independent_hot_out-Tci\n'
@@ -236,7 +236,7 @@ CALCULATIONS = {'lab_01_flow': ['\n'
                  '        assert np.allclose(Ch*(Thi-flow_results[:,0]), '
                  'cold_flows*cpc*(flow_results[:,1]-Tci))\n'
                  '        '],
- 'lab_03_distillation': ['\n'
+ 'main_labs/lab_03_distillation': ['\n'
                          '        D = F*(zF-xB)/(xD-xB)\n'
                          '        B = F-D\n'
                          '        total_residual = F-D-B\n'
@@ -390,7 +390,7 @@ CALCULATIONS = {'lab_01_flow': ['\n'
                          '{active_height:.2f}")\n'
                          '        assert N_ideal == 11 and tray_results[1][1] == 16\n'
                          '        '],
- 'lab_04_absorption': ['\n'
+ 'optional_labs/lab_04_absorption': ['\n'
                        '        yin_fraction, yout_fraction = Yin/(1+Yin), Yout/(1+Yout)\n'
                        '        xout_ratio = Xin+Gs/Ls*(Yin-Yout)\n'
                        '        xout_fraction = xout_ratio/(1+xout_ratio)\n'

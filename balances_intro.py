@@ -275,13 +275,13 @@ case; when changing a setting, update your own stream labels accordingly.
 salt mass flow, salt fraction, or both change? Write your prediction before running.
 '''),md('''### Setup
 
-Locally, open this notebook in `lab_00` with its own `helpers.py`. In Colab,
+Locally, open this notebook in `preparation/lab_00_balances` with its own `helpers.py`. In Colab,
 upload this notebook and that helper file using the Files panel. A separate
 kernel/session prevents confusion with helpers from the other labs.
 '''),code('''
 from pathlib import Path
 if not Path('helpers.py').exists():
-    raise FileNotFoundError('Upload lab_00/helpers.py beside this notebook, then rerun.')
+    raise FileNotFoundError('Upload preparation/lab_00_balances/helpers.py beside this notebook, then rerun.')
 import numpy as np
 import matplotlib.pyplot as plt
 import helpers as h
@@ -371,12 +371,12 @@ Use the same equations and supplied cells; no new algorithms are needed.
     notebook=nbformat.v4.new_notebook(cells=cells,metadata={
         'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},
         'language_info':{'name':'python'},'teaching_variant':'introductory-balances'})
-    notebook = apply_course_role(notebook,'lab_00')
+    notebook = apply_course_role(notebook,'preparation/lab_00_balances')
     nbformat.validate(notebook)
     if execute:
         from nbclient import NotebookClient
         NotebookClient(notebook,timeout=90,kernel_name='python3',
-                       resources={'metadata':{'path':str((ROOT/'lab_00').resolve())}}).execute()
-    destination=ROOT/'lab_00'/('lab_solution.ipynb' if solution else 'lab.ipynb')
+                       resources={'metadata':{'path':str((ROOT/'preparation/lab_00_balances').resolve())}}).execute()
+    destination=ROOT/'preparation/lab_00_balances'/('lab_solution.ipynb' if solution else 'lab.ipynb')
     nbformat.write(notebook,destination)
     print('Built '+str(destination),flush=True)

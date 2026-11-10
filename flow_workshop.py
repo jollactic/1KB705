@@ -244,7 +244,7 @@ def adapt_flow_notebook(notebook,md,code):
         if cell.cell_type=='markdown' and cell.source.startswith('## 2.'):
             break
         if cell.cell_type=='markdown' and cell.source.startswith('## Model and assumptions'):
-            cell = md(THEORY + '\n\n' + MAIN_INPUTS['lab_01_flow'])
+            cell = md(THEORY + '\n\n' + MAIN_INPUTS['main_labs/lab_01_flow'])
         if cell.cell_type=='code' and 'rho, mu, g = 998.0' in cell.source:
             cell = code(STARTER)
         if cell.cell_type=='markdown' and cell.source.startswith('## Design workshop:'):

@@ -1,6 +1,6 @@
 """Explicit supplied main-case data, separate from the smaller worked examples."""
 MAIN_INPUTS = {
-'lab_01_flow': '''### Main-case input reference
+'main_labs/lab_01_flow': '''### Main-case input reference
 
 | Input | Value / units | Role |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ Curve coefficients and operating limits are stated above; cost and changed-duty
 inputs are supplied in their own sections. All are teaching assumptions, not
 manufacturer measurements. Head, speed, efficiency, power and energy are calculated.
 ''',
-'lab_02_heat': '''### Main-case input reference
+'optional_labs/lab_02_heat': '''### Main-case input reference
 
 These supplied synthetic inputs define the main case, not the smaller example.
 
@@ -36,7 +36,7 @@ area (m²) are calculated. Specific heat capacity cp differs from capacity rate
 C = mass flow × cp. Fouling, cost, area alternatives and operating hours are
 separate supplied inputs in later sections. No property lookup is implied.
 ''',
-'lab_03_distillation': '''### Main-case input reference
+'main_labs/lab_03_distillation': '''### Main-case input reference
 
 Use a hypothetical binary mixture. Compositions are mole fractions of the more
 volatile component, not mass fractions. All properties are teaching assumptions.
@@ -54,7 +54,7 @@ Product flows, minimum reflux, stages and vapour circulation are calculated.
 Tray efficiency, spacing, capacity/height limits, latent heat and prices are
 separately supplied in their sections. The earlier example has different targets.
 ''',
-'lab_04_absorption': '''### Main-case input reference
+'optional_labs/lab_04_absorption': '''### Main-case input reference
 
 Use the hypothetical isothermal, nonreacting system. Flows are solute-free molar
 flows; X and Y are mole ratios, not mole fractions.

@@ -8,13 +8,14 @@ and 4 (absorption) are optional, unassessed self-study for interested students.
 They have no required submission and can be explored independently and selectively,
 with the worked examples and solution notebooks as learning aids. The assessment
 rubric and submission guidance in these notes apply only to the two main labs.
-Keep the original folder names for stable links; do not require optional-lab
-results to complete Labs 1 or 3. `course_structure.py` maintains these roles and
+Folders are grouped under `preparation/`, `main_labs/` and `optional_labs/`;
+retain the lab numbers, and use the updated paths in the README. Do not require
+optional-lab results to complete Labs 1 or 3. `course_structure.py` maintains these roles and
 their notebook notices across rebuilds.
 
 ## Introductory Lab 00
 
-Use `lab_00` before the four design labs. Its core is deliberately basic and
+Use `preparation/lab_00_balances` before the four design labs. Its core is deliberately basic and
 takes about three hours (30/35/35/40/25/15 min, including a short break).
 Optional practice can extend this to four–six hours. Ask students to write
 boundaries, assumptions, symbolic equations and units before looking at results.

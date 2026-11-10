@@ -1,8 +1,8 @@
 """Course roles shared by generated student and solution notebooks."""
 import nbformat
 
-ROLES = {'lab_00':'preparation','lab_01_flow':'main','lab_03_distillation':'main',
-         'lab_02_heat':'optional','lab_04_absorption':'optional'}
+ROLES = {'preparation/lab_00_balances':'preparation','main_labs/lab_01_flow':'main','main_labs/lab_03_distillation':'main',
+         'optional_labs/lab_02_heat':'optional','optional_labs/lab_04_absorption':'optional'}
 
 
 def apply_course_role(notebook,folder):

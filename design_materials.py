@@ -12,7 +12,7 @@ is a result to discuss, not something to hide. Keep units with every reported va
 
 
 DESIGN_TASKS = {
-    'lab_01_flow': [
+    'main_labs/lab_01_flow': [
         ('2. Understand the energy requirement — 75 minutes',
          '''Use the supplied contribution calculation at 3 L/s. On the system diagram,
 identify where the pump adds energy and where energy is dissipated. Check one
@@ -50,7 +50,7 @@ procurement. Revise your selection if its margin is inadequate.''',
 roughness_high = 2e-4  # m
 efficiency_low = 0.55
 efficiency_high = 0.80''')],
-    'lab_02_heat': [
+    'optional_labs/lab_02_heat': [
         ('2. Check that the temperature target is feasible — 75 minutes',
          '''Run the supplied balance and temperature schematic. Check one duty
 calculation with a calculator. Locate both terminal driving forces on the system
@@ -82,7 +82,7 @@ pressure-drop and pumping calculations must accompany your thermal decision?
 State why the constant-U sweep is provisional.''',
          '''cold_flow_low = 0.5  # kg/s
 cold_flow_high = 1.8  # kg/s''')],
-    'lab_03_distillation': [
+    'main_labs/lab_03_distillation': [
         ('2. Establish the separation duty and reflux limit — 75 minutes',
          '''Run the supplied material balance and pinch construction. Check one
 component balance with a calculator. Identify feed, reflux, distillate and
@@ -118,7 +118,7 @@ change your preferred reflux policy?''',
          '''efficiency_cases = [0.50, 0.65, 0.80]
 selected_tray_efficiency = 0.65
 tray_spacing = 0.45  # m''')],
-    'lab_04_absorption': [
+    'optional_labs/lab_04_absorption': [
         ('2. Check removal duty and solvent feasibility — 75 minutes',
          '''Run the supplied solute balance and pinch construction. Check the
 removed solute flow with a calculator. Explain why mole ratios are used with
@@ -157,7 +157,7 @@ margin; explain why the dry Ergun result cannot supply them.''', '')]
 def supplied_code(folder, index):
     """Adapt the verified reference calculations to explicit student design settings."""
     source = textwrap.dedent(CALCULATIONS[folder][index]).strip()
-    if folder == 'lab_01_flow':
+    if folder == 'main_labs/lab_01_flow':
         if index == 1:
             source = 'system = h.system_head(Q,diameter,length,rise,roughness,K,rho,mu)\n' + source
             source = source.replace('assert base_q >= .003',
@@ -189,7 +189,7 @@ print(f"Your selection: {chosen_result[3]:.6f} kWh/m³; feasible={chosen_result[
     print(f"Robust to stated roughness range: D={robust_choice[0]:.3f} m, speed={robust_choice[1]:.1f}")
 else:
     print("No candidate meets the requirement at maximum roughness")''')
-    elif folder == 'lab_02_heat':
+    elif folder == 'optional_labs/lab_02_heat':
         if index == 2:
             source = source.replace('design_R = .0006\n', '')
             source = source.replace('assert np.isclose(enlarged_design[1],55)', 'assert np.isclose(enlarged_design[1],Tco_target)')
@@ -204,7 +204,7 @@ if np.any(meets_target):
 else:
     print("No tested flow meets the outlet-temperature target")
 '''
-    elif folder == 'lab_03_distillation':
+    elif folder == 'main_labs/lab_03_distillation':
         if index == 1:
             source = 'rect, strip = h.operating_lines(zF,xD,xB,R)\n' + source
         if index == 2:
@@ -217,7 +217,7 @@ else:
             source = source.replace('assert N_ideal == 11 and tray_results[1][1] == 16',
                                     '''selected_trays = int(np.ceil(ideal_trays/selected_tray_efficiency))
 print(f"Selected assumption: {selected_trays} trays; active height={selected_trays*tray_spacing:.3f} m")''')
-    elif folder == 'lab_04_absorption':
+    elif folder == 'optional_labs/lab_04_absorption':
         if index == 1:
             source = 'Ls = solvent_multiple*Lmin\nXout = Xin+Gs/Ls*(Yin-Yout)\n' + source
         if index == 2:
@@ -315,10 +315,10 @@ measurement or vendor datum needed. No new code is required for submission.'''
             cell.source = '''## Optional design-review extension
 
 No coding is required. ''' + {
-                'lab_01_flow': 'Would two identical parallel pumps double the delivered flow? Sketch the combined pump curve against the rising system curve and explain your answer.',
-                'lab_02_heat': 'Would a low cold outlet necessarily prove fouling? Propose measurements that distinguish heat loss to the room from reduced UA.',
-                'lab_03_distillation': 'What would you check before replacing the constant-volatility curve with measured equilibrium data? Explain the implications of interpolation uncertainty or an azeotrope.',
-                'lab_04_absorption': 'Could equilibrium data alone establish packing height? Compare an HETP specification with a transfer-unit model and list the additional vendor data needed.'
+                'main_labs/lab_01_flow': 'Would two identical parallel pumps double the delivered flow? Sketch the combined pump curve against the rising system curve and explain your answer.',
+                'optional_labs/lab_02_heat': 'Would a low cold outlet necessarily prove fouling? Propose measurements that distinguish heat loss to the room from reduced UA.',
+                'main_labs/lab_03_distillation': 'What would you check before replacing the constant-volatility curve with measured equilibrium data? Explain the implications of interpolation uncertainty or an azeotrope.',
+                'optional_labs/lab_04_absorption': 'Could equilibrium data alone establish packing height? Compare an HETP specification with a transfer-unit model and list the additional vendor data needed.'
             }[folder]
     notebook.cells = result
     notebook.metadata['teaching_variant'] = 'design-support'

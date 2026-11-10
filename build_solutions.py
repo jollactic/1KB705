@@ -27,14 +27,14 @@ def code(source):
 
 
 def build(execute=True,lab=None):
-    if lab in (None,'lab_00'):
+    if lab in (None,'preparation/lab_00_balances'):
         from balances_intro import build_intro
         build_intro(solution=True,execute=execute)
     for folder, answers in SOLUTIONS.items():
         if lab and folder != lab:
             continue
         discussions = DISCUSSIONS[folder]
-        if folder == 'lab_01_flow':
+        if folder == 'main_labs/lab_01_flow':
             from flow_solution import FLOW_ANSWERS, FLOW_DISCUSSIONS
             answers, discussions = FLOW_ANSWERS, FLOW_DISCUSSIONS
         else:

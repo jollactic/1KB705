@@ -4,7 +4,7 @@ Numbers refer to the default settings, not every possible student design.
 """
 
 DISCUSSIONS = {
-    'lab_01_flow': [r'''
+    'main_labs/lab_01_flow': [r'''
 **Where is energy added and lost?** The pump supplies mechanical energy to the
 water between Tank A and Tank B. Wall friction dissipates energy along the pipe;
 separation and mixing in bends and valves cause additional local losses. The
@@ -123,7 +123,7 @@ fitting data. My recommendation is robust to the specified roughness range,
 but it remains conditional on those equipment and suction checks.
 '''],
 
-    'lab_02_heat': [r'''
+    'optional_labs/lab_02_heat': [r'''
 **Hand check and energy balance.** The cold stream requires
 $1.0\times4180\times(55-15)=167200$ W, or 167.2 kW. The hot capacity
 rate is $1.2\times3800=4560$ W/K, giving a hot outlet of
@@ -218,7 +218,7 @@ and fouling can also vary. These omissions make the constant-U envelope
 provisional even though its energy balances close.
 '''],
 
-    'lab_03_distillation': [r'''
+    'main_labs/lab_03_distillation': [r'''
 **Duty and diagram.** The feed is 100 kmol/h at zF = 0.45. Overhead vapour
 enters a total condenser; part returns as reflux and the remainder leaves
 as distillate. Bottom liquid exchanges material with the partial reboiler
@@ -307,7 +307,7 @@ I would compare reflux policies across a credible efficiency range before
 fixing the vessel; I would not assume more reflux is automatically preferable.
 '''],
 
-    'lab_04_absorption': [r'''
+    'optional_labs/lab_04_absorption': [r'''
 **Removal and basis check.** Incoming solute is $G_sY_{in}=100(0.03)=3$
 kmol/h; outgoing solute is $100(0.003)=0.3$ kmol/h. Removal is therefore
 2.7 kmol/h, or 90%. The solvent gains the same amount. Using mole ratios
@@ -407,7 +407,7 @@ pressure-drop allowance.
 
 
 COMPARISON_CODE = {
-    'lab_03_distillation': '''
+    'main_labs/lab_03_distillation': '''
     # Supporting comparison for the written default-case answers.
     print("Reference comparison: same base feed and product compositions")
     for comparison_R in [2.5, 3.0, 4.0]:
@@ -415,7 +415,7 @@ COMPARISON_CODE = {
         comparison_D = 100*(.45-.05)/(.95-.05)
         print(f"R={comparison_R:.1f}: {comparison_N} full ideal contacts; V={(comparison_R+1)*comparison_D:.3f} kmol/h")
     ''',
-    'lab_04_absorption': '''
+    'optional_labs/lab_04_absorption': '''
     # Supporting comparison for the written default-case answers.
     print("Reference comparison at m=1.5 and Lmin=135 kmol/h")
     for comparison_multiple in [1.1,1.5,2.0]:

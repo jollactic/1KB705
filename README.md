@@ -7,10 +7,23 @@ or assessment. They are not prerequisites for the main labs.
 
 Recommended route: **Lab 00 (as needed) → Lab 1 → Lab 3**. Explore Lab 2
 or Lab 4 independently if interested; each includes worked examples, a helper
-file and a complete solution for self-checking. Existing folder numbers and
-paths are retained so notebook links and Colab workflows continue to work.
+file and a complete solution for self-checking. Lab numbers are retained; folders
+are grouped by their role. Use the updated paths below for notebooks and Colab.
 
-Start with **`lab_00`**, an introductory workshop on choosing system boundaries
+```text
+preparation/
+  lab_00_balances/
+main_labs/
+  lab_01_flow/
+  lab_03_distillation/
+optional_labs/
+  lab_02_heat/
+  lab_04_absorption/
+```
+
+Each lab folder contains its student notebook, solution notebook and `helpers.py`.
+
+Start with **`preparation/lab_00_balances`**, an introductory workshop on choosing system boundaries
 and writing elementary total-mass, component and heat balances. It includes
 mixing, splitting, water evaporation (mass balance only), stream heating,
 adiabatic temperature mixing and tank accumulation. Students write equations
@@ -29,11 +42,11 @@ No Python algorithms, loops or plotting code need to be written or assessed.
 
 | Folder | Design problem | Course role | Student decisions |
 | --- | --- | --- | --- |
-| [lab_00](lab_00/lab.ipynb) | First mass and heat balances | Preparation | Write equations, check assumptions and physical limits |
-| [lab_01_flow](lab_01_flow/lab.ipynb) | Water-transfer line and pump | **Main lab** | Select diameter/speed at fixed delivery, compare lifecycle cost, choose series/parallel arrangements |
-| [lab_03_distillation](lab_03_distillation/lab.ipynb) | Binary separation | **Main lab** | Choose reflux/purity policy and tray-height assumptions |
-| [lab_02_heat](lab_02_heat/lab.ipynb) | Heat recovery and fouling | Optional self-study | Choose fouling allowance, area and operating flow |
-| [lab_04_absorption](lab_04_absorption/lab.ipynb) | Solvent rate and column size | Optional self-study | Choose solvent policy, compare internals and robustness |
+| [preparation/lab_00_balances](preparation/lab_00_balances/lab.ipynb) | First mass and heat balances | Preparation | Write equations, check assumptions and physical limits |
+| [main_labs/lab_01_flow](main_labs/lab_01_flow/lab.ipynb) | Water-transfer line and pump | **Main lab** | Select diameter/speed at fixed delivery, compare lifecycle cost, choose series/parallel arrangements |
+| [main_labs/lab_03_distillation](main_labs/lab_03_distillation/lab.ipynb) | Binary separation | **Main lab** | Choose reflux/purity policy and tray-height assumptions |
+| [optional_labs/lab_02_heat](optional_labs/lab_02_heat/lab.ipynb) | Heat recovery and fouling | Optional self-study | Choose fouling allowance, area and operating flow |
+| [optional_labs/lab_04_absorption](optional_labs/lab_04_absorption/lab.ipynb) | Solvent rate and column size | Optional self-study | Choose solvent policy, compare internals and robustness |
 
 Each folder contains `lab.ipynb` and an independent `helpers.py`. There are no
 cross-lab imports, API keys, remote data requirements, or repository-specific URLs.
@@ -147,15 +160,15 @@ python validate_design_labs.py
 ```
 
 `flow_workshop.py` is the current Lab 1 content source; its numerical routines
-and plotting functions live in `lab_01_flow/helpers.py`. It overrides the older
+and plotting functions live in `main_labs/lab_01_flow/helpers.py`. It overrides the older
 flow template retained in the common builder. `flow_solution.py` holds its current
-question-by-question instructor answers. Use `python build_labs.py --lab lab_01_flow`
-and `python build_solutions.py --lab lab_01_flow` for a targeted rebuild.
+question-by-question instructor answers. Use `python build_labs.py --lab main_labs/lab_01_flow`
+and `python build_solutions.py --lab main_labs/lab_01_flow` for a targeted rebuild.
 
 `balances_intro.py` holds Lab 00's instructions, diagrams and model answers;
-its independent numerical checks are in `lab_00/helpers.py`. Build with
-`python build_labs.py --lab lab_00` and
-`python build_solutions.py --lab lab_00`. The usual `--runtime-dir` option
+its independent numerical checks are in `preparation/lab_00_balances/helpers.py`. Build with
+`python build_labs.py --lab preparation/lab_00_balances` and
+`python build_solutions.py --lab preparation/lab_00_balances`. The usual `--runtime-dir` option
 is also available for executing its solution in a restricted environment.
 The introductory authoring module contains answers; student distributions need
 only its notebook and matching helper file.

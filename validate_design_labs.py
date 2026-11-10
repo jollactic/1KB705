@@ -9,14 +9,14 @@ ROOT = Path(__file__).parent.resolve()
 
 # Each tuple changes an actual editable section; later cells must use the change.
 SCENARIOS = {
-    'lab_01_flow': [
+    'main_labs/lab_01_flow': [
         ('higher electricity price changes diameter choice',
          {1:'selected_diameter = .065',2:'electricity_price = .40'},
          'assert chosen["flow"] == .003\nassert diameters[best_index] == .065\nassert chosen["feasible"]'),
         ('higher fixed duty has no feasible single-pump candidate',
          {1:'required_flow_Lps = 6.0'},
          'assert not feasible_mask.any()\nassert best_index is None\nassert arrangement_results[("A","parallel")]["feasible"]')],
-    'lab_02_heat': [
+    'optional_labs/lab_02_heat': [
         ('no fouling allowance', {2:'design_R = 0.0'},
          'assert np.isclose(fouled_sized_area,area)\nassert np.isclose(enlarged_design[1],55)'),
         ('larger allowance and narrower flow range', {2:'design_R = .001',
@@ -24,7 +24,7 @@ SCENARIOS = {
          'assert fouled_sized_area > area\nassert np.isclose(enlarged_design[1],55)'),
         ('free backup electricity favours lower capital', {2:'trim_electricity_price = 0.0'},
          'assert np.isclose(heat_best["area"],8.13059)\nassert heat_best["trim_kw"]>0')],
-    'lab_03_distillation': [
+    'main_labs/lab_03_distillation': [
         ('low reflux with less efficient trays', {1:'R = 1.6', 3:'selected_tray_efficiency = .50'},
          'assert N_ideal > 11\nassert selected_trays == int(np.ceil((N_ideal-1)/.50))'),
         ('higher reflux and different purity policy', {1:'R = 3.5',
@@ -33,7 +33,7 @@ SCENARIOS = {
          'assert N_ideal < 11\nassert len(purity_results) == 2\nassert selected_trays == int(np.ceil((N_ideal-1)/.80))'),
         ('increased feed constrains reflux policy', {2:'comparison_feed = 120.0'},
          'assert column_best["multiple"]==1.8\nassert column_best["V"]<=190\nassert len(eligible_columns)==1')],
-    'lab_04_absorption': [
+    'optional_labs/lab_04_absorption': [
         ('low solvent rate loses uncertainty margin', {1:'solvent_multiple = 1.1'},
          'assert np.isnan(robustness[-1][2])\nassert np.isclose(Ls,1.1*Lmin)'),
         ('larger solvent rate and alternative internals', {1:'solvent_multiple = 2.5',

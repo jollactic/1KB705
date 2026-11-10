@@ -9,9 +9,9 @@ def design_diagram(folder):
     fig,ax = plt.subplots(figsize=(12,3.4))
     ax.set(xlim=(0,12),ylim=(0,3.4)); ax.axis('off')
     labels = {
-        'lab_02_heat':['Cold feed\n1 kg/s, 15 °C','Heat recovery\nArea A, fouled U','Electric trim heater\nPositive duty deficit','Required service\n1 kg/s, 55 °C'],
-        'lab_03_distillation':['Feed\nF, zF = 0.45','Distillation column\nActive height ≤ 8 m','Products\nxD = 0.95, xB = 0.05'],
-        'lab_04_absorption':['Gas feed\nGs = 100, Yin = 0.03','Absorber\nActive packing ≤ 6 m','Cleaned gas\nYout = 0.003']
+        'optional_labs/lab_02_heat':['Cold feed\n1 kg/s, 15 °C','Heat recovery\nArea A, fouled U','Electric trim heater\nPositive duty deficit','Required service\n1 kg/s, 55 °C'],
+        'main_labs/lab_03_distillation':['Feed\nF, zF = 0.45','Distillation column\nActive height ≤ 8 m','Products\nxD = 0.95, xB = 0.05'],
+        'optional_labs/lab_04_absorption':['Gas feed\nGs = 100, Yin = 0.03','Absorber\nActive packing ≤ 6 m','Cleaned gas\nYout = 0.003']
     }[folder]
     positions = [0.1,3.1,6.1,9.1] if len(labels)==4 else [.1,4.6,9.1]
     for pos,label in zip(positions,labels):
@@ -22,18 +22,18 @@ def design_diagram(folder):
     for left,right in zip(positions[:-1],positions[1:]):
         arrow((left+2.7,1.85),(right,1.85))
     center = positions[1]+1.35
-    upper = {'lab_02_heat':'Hot process stream supplies recovered heat',
-             'lab_03_distillation':'Condenser and reflux: V ≤ 190 kmol/h',
-             'lab_04_absorption':'Lean solvent L; nominal/adverse equilibrium'}[folder]
-    lower = {'lab_02_heat':'Electrical trim input; compare area + backup electricity cost',
-             'lab_03_distillation':'Reboiler heat input: compare utility cost and capacity',
-             'lab_04_absorption':'Rich solvent to service/regeneration: compare circulation cost'}[folder]
+    upper = {'optional_labs/lab_02_heat':'Hot process stream supplies recovered heat',
+             'main_labs/lab_03_distillation':'Condenser and reflux: V ≤ 190 kmol/h',
+             'optional_labs/lab_04_absorption':'Lean solvent L; nominal/adverse equilibrium'}[folder]
+    lower = {'optional_labs/lab_02_heat':'Electrical trim input; compare area + backup electricity cost',
+             'main_labs/lab_03_distillation':'Reboiler heat input: compare utility cost and capacity',
+             'optional_labs/lab_04_absorption':'Rich solvent to service/regeneration: compare circulation cost'}[folder]
     ax.text(6,3,upper,ha='center',fontsize=11)
     arrow((center,2.85),(center,2.4),'darkorange')
     ax.text(6,.25,lower,ha='center',fontsize=11)
-    lower_center = positions[2]+1.35 if folder=='lab_02_heat' else center
+    lower_center = positions[2]+1.35 if folder=='optional_labs/lab_02_heat' else center
     arrow((lower_center,.6),(lower_center,1.3),'darkorange')
-    if folder=='lab_04_absorption':
+    if folder=='optional_labs/lab_04_absorption':
         # Rich solvent leaves the design boundary rather than supplying heat.
         ax.patches[-1].remove()
         arrow((center,1.3),(center,.6),'darkorange')
@@ -42,17 +42,17 @@ def design_diagram(folder):
     return base64.b64encode(stream.getvalue()).decode('ascii')
 
 SETTINGS = {
- 'lab_02_heat': '''\ntrim_electricity_price = 0.10 #@param {type:"number"}
+ 'optional_labs/lab_02_heat': '''\ntrim_electricity_price = 0.10 #@param {type:"number"}
 cost_horizon = 10 #@param {type:"number"}''',
- 'lab_03_distillation': '''\ncomparison_feed = 100.0 #@param {type:"number"}
+ 'main_labs/lab_03_distillation': '''\ncomparison_feed = 100.0 #@param {type:"number"}
 comparison_heat_price = 0.03 #@param {type:"number"}''',
- 'lab_04_absorption': '''\nrobust_slope = 1.8 #@param {type:"number"}
+ 'optional_labs/lab_04_absorption': '''\nrobust_slope = 1.8 #@param {type:"number"}
 design_hetp = 1.2 #@param {type:"number"}
 solvent_service_price = 60.0 #@param {type:"number"}'''
 }
 
 PROMPTS = {
- 'lab_02_heat': r'''
+ 'optional_labs/lab_02_heat': r'''
 **Core design challenge — recover heat, then supply any deficit.** The system
 is now an exchanger followed by a trim heater, delivering the same **1 kg/s
 at 55 °C** for 4000 h/year. Compare supplied areas 8.13059, 11.30152 and
@@ -71,7 +71,7 @@ at 0.001 m² K/W? Is the cheapest exchanger also the cheapest way to deliver
 the required service? A larger exchanger is not automatically sufficient at
 every fouling condition. Explain the control and cleaning assumptions.
 ''',
- 'lab_03_distillation': r'''
+ 'main_labs/lab_03_distillation': r'''
 **Core design challenge — constrained equipment and heat cost.** Keep the same
 feed composition and product specifications. Compare six supplied R/Rmin policies
 with overall efficiency 0.65, tray spacing 0.45 m, **maximum active height 8 m**
@@ -91,7 +91,7 @@ and compare it with minimum-stage and minimum-heat choices. Then repeat at
 policy still meet capacity? If a lower-reflux policy passes, what extra height
 does it need? A change in product throughput must be reflected in D and V.
 ''',
- 'lab_04_absorption': r'''
+ 'optional_labs/lab_04_absorption': r'''
 **Core design challenge — a height-limited absorber under uncertainty.** Retain
 the same 100 kmol/h solute-free gas feed and **90% removal**. Compare solvent
 rates of 1.1, 1.5, 1.8, 2.0 and 2.5 times the nominal minimum of 135 kmol/h.
@@ -113,7 +113,7 @@ can change the answer and what extra cost or vendor data would change your choic
 }
 
 ANALYSIS = {
- 'lab_02_heat': '''
+ 'optional_labs/lab_02_heat': '''
 # Same-service area/backup-heating comparison.
 heat_designs = h.compare_designs(design_R,trim_electricity_price,cost_horizon)
 print('Area/m²  recovery/kW  trim/kW   trim/kWh/year  capital/€  horizon/€')
@@ -134,7 +134,7 @@ axes[1].axhline(167.2,color='black',linestyle=':',label='Required service duty')
 axes[1].set(xlabel='Added resistance / (10$^{-4}$ m² K W$^{-1}$)',ylabel='Duty / kW')
 axes[1].legend(); axes[1].grid(); plt.tight_layout(); plt.show()
 ''',
- 'lab_03_distillation': '''
+ 'main_labs/lab_03_distillation': '''
 # Fixed separation, constrained height/capacity and illustrative heat cost.
 column_designs = h.compare_designs(comparison_feed,heat_price=comparison_heat_price)
 print('R/Rmin   stages  trays height/m  V/kmol/h  heat/kW  horizon/€  eligible')
@@ -164,7 +164,7 @@ axes[1].set(xlabel='R/Rmin',ylabel='Modelled horizon cost / €')
 for axis in axes: axis.grid()
 plt.tight_layout(); plt.show()
 ''',
- 'lab_04_absorption': '''
+ 'optional_labs/lab_04_absorption': '''
 # Same removal; choose solvent and height against adverse equilibrium.
 absorber_designs = h.compare_designs(robust_slope,design_hetp,solvent_service_price)
 print('L/Lmin   L/kmol/h nominal N adverse N height/m horizon/€ eligible / reason')
@@ -205,9 +205,9 @@ def enrich_workshop(notebook,folder,md,code):
             cell.source += SETTINGS[folder]
         if cell.metadata.get('design_analysis') == 2:
             cell.source += '\n\n' + ANALYSIS[folder]
-        if folder=='lab_02_heat' and cell.metadata.get('design_analysis')==3:
+        if folder=='optional_labs/lab_02_heat' and cell.metadata.get('design_analysis')==3:
             cell.source = cell.source.replace('design_U*fouled_sized_area','design_U*installed_area')
-        if folder=='lab_04_absorption' and cell.cell_type=='markdown' and cell.source.startswith('## 5.'):
+        if folder=='optional_labs/lab_04_absorption' and cell.cell_type=='markdown' and cell.source.startswith('## 5.'):
             cell.source += '\n\nDistinguish the original solvent-policy sensitivity from the '
             cell.source += 'robust candidate in the preceding core comparison. State whether '
             cell.source += 'you retain or revise the original policy after applying the height limit.'
