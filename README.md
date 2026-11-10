@@ -23,6 +23,19 @@ optional_labs/
 
 Each lab folder contains its student notebook, solution notebook and `helpers.py`.
 
+Each also has a separate **tutor guide** with step-by-step explanations of the
+worked examples and solution questions, numerical checkpoints, common errors,
+and suggested prompts for helping students:
+
+- [Lab 00 tutor guide](preparation/lab_00_balances/TUTOR_GUIDE.md)
+- [Lab 01 tutor guide](main_labs/lab_01_flow/TUTOR_GUIDE.md)
+- [Lab 02 tutor guide](main_labs/lab_02_distillation/TUTOR_GUIDE.md)
+- [Heat tutor guide](optional_labs/heat/TUTOR_GUIDE.md)
+- [Absorption tutor guide](optional_labs/absorption/TUTOR_GUIDE.md)
+
+These guides contain answers and are intended for tutors. Exclude
+`TUTOR_GUIDE.md` files from a student-only distribution if answers are withheld.
+
 Start with **`preparation/lab_00_balances`**, an introductory workshop on choosing system boundaries
 and writing elementary total-mass, component and heat balances. It includes
 mixing, splitting, water evaporation (mass balance only), stream heating,

@@ -1,5 +1,21 @@
 # Instructor notes — draft for review
 
+## Detailed tutor guides
+
+Each lab folder contains a separate `TUTOR_GUIDE.md`, linked from the repository
+README. These explain the small worked examples and the main solution questions
+in greater detail than the notebook answers: balance boundaries, equation
+derivations, substituted values, numerical checks, common misconceptions and
+questions tutors can ask before giving the answer. They are static instructor
+documents, not generated notebook outputs; update them if case data change.
+
+The flow guide covers Parts 1–4 only and does not reintroduce the removed
+pump-arrangement task or separate report. The distillation guide distinguishes
+the two-contact example, baseline R = 2.5 and selected constrained reflux policy.
+Heat and absorption guides support optional self-study; their further exploration
+must not become additional compulsory work. Exclude these answer-containing guides
+from a student-only release if solutions should be withheld.
+
 ## Main route and optional self-study (four-hour editions)
 
 The main course labs are **Lab 01 (flow and pumps)** and **Lab 02 (distillation)**,
