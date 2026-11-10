@@ -222,7 +222,7 @@ comparison is internally consistent.''',
         ''')
 }
 
-SOLUTIONS['optional_labs/lab_02_heat'] = {
+SOLUTIONS['optional_labs/heat'] = {
     'prediction': 'Prediction: fouling increases thermal resistance and reduces recovered heat '
                   'for a fixed area. More cold flow can recover more heat while producing a lower outlet temperature.',
     'warmup': (
@@ -418,7 +418,7 @@ Real distributed loss would require an additional spatial energy balance.''',
         ''')
 }
 
-SOLUTIONS['main_labs/lab_03_distillation'] = {
+SOLUTIONS['main_labs/lab_02_distillation'] = {
     'prediction': 'Prediction: increasing reflux moves the operating lines toward the '
                   'diagonal and reduces ideal stages, while increasing vapour circulation. '
                   'Higher distillate purity is likely to increase separation effort.',
@@ -664,7 +664,7 @@ number of installed trays.''',
         ''')
 }
 
-SOLUTIONS['optional_labs/lab_04_absorption'] = {
+SOLUTIONS['optional_labs/absorption'] = {
     'prediction': 'Prediction: increasing solvent flow reduces the ideal-stage requirement, '
                   'but increases solvent handling. A larger equilibrium slope makes absorption '
                   'less favourable and increases the minimum solvent requirement.',

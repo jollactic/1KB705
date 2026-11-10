@@ -44,6 +44,18 @@ def build(execute=True,lab=None):
             answers = dict(answers)
             original = answers['recommendation'].split('\n\n',1)
             answers['recommendation'] = RECOMMENDATION_OPENINGS[folder] + '\n\n' + original[1]
+            if folder=='main_labs/lab_02_distillation':
+                answers['recommendation']='''I select R/Rmin = 1.8 (R = 2.43377) among the supplied policies for
+the fixed separation. It needs 11 ideal contacts, including the reboiler,
+or 16 actual trays at overall efficiency 0.65. Active height is 7.2 m,
+below the 8 m limit, and vapour circulation is 152.612 kmol/h, below 190.
+Lower reflux policies fail the height limit; higher feasible reflux increases
+modelled heat cost. At 120 kmol/h feed, this policy still passes, but vapour
+margin shrinks to 6.866 kmol/h. I would retain the policy provisionally and
+verify actual capacity before increasing throughput. The illustrative latent
+heat, efficiency and costs are not measured mixture or vendor data. Real VLE,
+enthalpies, tray hydraulics and utility prices are required before procurement.
+The quoted height excludes vessel allowances.'''
         student = ROOT / folder / 'lab.ipynb'
         notebook = copy.deepcopy(nbformat.read(student, as_version=4))
         cells = []
@@ -70,8 +82,9 @@ def build(execute=True,lab=None):
             if cell.cell_type == 'markdown' and cell.source.startswith('## Optional extension'):
                 cells.extend([markdown('### Extension solution\n\n' + answers['extension'][0]),
                               code(answers['extension'][1])])
-        if task != 4:
-            raise ValueError(f'{folder}: expected four task placeholders, found {task}')
+        expected_tasks=3 if folder=='main_labs/lab_01_flow' else 4
+        if task != expected_tasks:
+            raise ValueError(f'{folder}: expected {expected_tasks} task placeholders, found {task}')
         cells.insert(1, markdown('**Instructor solution — completed reference notebook.**\n\n'
                                 + answers['prediction'] + '\n\n'
                                 'All exercises, including the small-change example and optional '

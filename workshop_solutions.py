@@ -1,7 +1,7 @@
 """Answers for the added constrained-design core challenges in Labs 2–4."""
 
 EXTRA_DISCUSSION = {
- 'optional_labs/lab_02_heat': r'''
+ 'optional_labs/heat': r'''
 **Core challenge: compare the same delivered service.** At the default fouling
 resistance, the 8.13059 m² unit recovers 142.159 kW and needs 25.041 kW
 of trim heating to supply the required 167.2 kW service. At 4000 h/year,
@@ -25,7 +25,7 @@ and cleaning policy can change the equipment choice. This model omits backup
 heater purchase cost, exchanger pumping power, cleaning costs and discounting;
 its ranking is conditional on those omissions and the stated control assumptions.
 ''',
- 'main_labs/lab_03_distillation': r'''
+ 'main_labs/lab_02_distillation': r'''
 **Core challenge: choose only among eligible policies.** At the default feed,
 R/Rmin = 1.1 and 1.5 fail the 8 m active-height limit: they need 12.15
 and 8.55 m respectively. Ratio 3.0 has the fewest stages but requires
@@ -51,7 +51,7 @@ enthalpy calculation. The supplied V limit is not a flooding correlation.
 Vendor hydraulics, real enthalpies, cooling duty, equipment costs and utility
 prices are required before treating the chosen candidate as an actual column design.
 ''',
- 'optional_labs/lab_04_absorption': r'''
+ 'optional_labs/absorption': r'''
 **Core challenge: the nominal candidate does not pass the robust height screen.**
 At L = 148.5 kmol/h, the adverse minimum is 162 kmol/h, so the lowest
 circulation policy is infeasible even with unlimited height. At 202.5 kmol/h,
@@ -79,7 +79,7 @@ for comparison but is not the final robust candidate under these new constraints
 }
 
 RECOMMENDATION_OPENINGS = {
- 'optional_labs/lab_02_heat': '''For the default fouling allowance, I recommend carrying forward
+ 'optional_labs/heat': '''For the default fouling allowance, I recommend carrying forward
 an exchanger of about 11.30152 m², delivering 1 kg/s water at 55 °C with
 negligible normal trim heating at that condition. The supplied comparison gives
 about €11911 over ten years for exchanger installation plus backup electricity,
@@ -87,7 +87,7 @@ compared with about €109856 for the clean-sized unit with continuous trim heat
 This is a same-service comparison, not simply a comparison of recovered kilowatts.
 At a larger fouling allowance of 0.001 m² K/W, I would review the 14 m²
 candidate instead. The following thermal checks refer to the default case.''',
- 'main_labs/lab_03_distillation': '''For the added height/capacity challenge, I recommend
+ 'main_labs/lab_02_distillation': '''For the added height/capacity challenge, I recommend
 R/Rmin = 1.8, or R = 2.43377, among the six supplied policies. It meets
 the 8 m active-height and 190 kmol/h vapour limits with 16 trays, 7.2 m
 active height and 152.612 kmol/h vapour at the 100 kmol/h feed. It is the
@@ -95,7 +95,7 @@ least-cost feasible policy in the illustrative ten-year heat/capital comparison.
 At 120 kmol/h feed it still passes, but vapour margin falls to 6.866 kmol/h.
 This constrained recommendation refines the earlier R = 2.5 baseline, whose
 balance and stage checks remain useful reference calculations below.''',
- 'optional_labs/lab_04_absorption': '''For the added robust-height challenge, I recommend
+ 'optional_labs/absorption': '''For the added robust-height challenge, I recommend
 243 kmol/h solvent, or 1.8 times the nominal minimum, as the preferred
 candidate for review. It needs four nominal and five adverse-case contacts,
 giving 6 m active packed height at HETP = 1.2 m and an illustrative

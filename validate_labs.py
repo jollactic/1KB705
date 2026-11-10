@@ -104,7 +104,7 @@ def main():
     rejects(flow.performance,flow.RUNOUT_FLOW*1.01)
     print(f'Flow uncontrolled base: Q={1000*q:.6f} L/s, H={head:.6f} m, electrical={point["electrical"]:.6f} W')
 
-    heat = load('optional_labs/lab_02_heat')
+    heat = load('optional_labs/heat')
     close(heat.lmtd(20, 20), 20)
     rejects(heat.lmtd, -1, 20)
     close(heat.countercurrent_effectiveness(2, 1), 2/3)
@@ -126,7 +126,7 @@ def main():
         close(row['annual_kwh'],row['trim_kw']*4000)
     assert np.isclose(min(heat.compare_designs(0),key=lambda r:r['total'])['area'],8.13059)
 
-    dist = load('main_labs/lab_03_distillation')
+    dist = load('main_labs/lab_02_distillation')
     x = np.linspace(0, 1, 50)
     assert np.allclose(dist.inverse_equilibrium(dist.equilibrium(x)), x)
     rmin = dist.minimum_reflux(.45, .95)
@@ -148,7 +148,7 @@ def main():
         assert row['feasible'] == (row['height']<=8 and row['V']<=190)
     assert [r['multiple'] for r in dist.compare_designs(120) if r['feasible']]==[1.8]
 
-    absorb = load('optional_labs/lab_04_absorption')
+    absorb = load('optional_labs/absorption')
     lmin = 100*(.03-.003)/(.03/1.5)
     solvent = 1.5*lmin
     count, points = absorb.stage_count(100, solvent, .03, .003)

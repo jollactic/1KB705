@@ -239,7 +239,7 @@ balances before calculating. You need basic arithmetic and algebra; no prior
 balance course or Python programming is assumed. All case values are synthetic.
 
 **Workload:** about three hours of core work, including a short break. Optional
-practice can extend this to four–six hours; it is an introduction rather than
+practice can extend this to four hours; it is an introduction rather than
 another advanced design lab. Work in pairs. Show equations, substituted numbers
 and units. Calculations are supplied so the focus remains on setting up balances.
 
@@ -339,7 +339,7 @@ at emptying or overflow, rather than accepting impossible negative inventory
 or contents above capacity. Checks establish internal consistency; measurements
 are still needed to validate a model of real equipment.
 '''))
-    cells.append(md('''## Optional practice — up to three additional hours
+    cells.append(md('''## Optional practice — up to one additional hour
 
 Use the same equations and supplied cells; no new algorithms are needed.
 

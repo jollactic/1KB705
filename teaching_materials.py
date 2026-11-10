@@ -44,7 +44,7 @@ def system_diagram(folder):
         text(6.1, 3.3, 'Pipe: L, D, roughness\nBends / valves: ΣK = 8')
         text(5.3, .55, 'Flow Q →')
         text(8.6, 1.25, 'Static rise Δz = z₂ − z₁\nPump head = rise + losses')
-    elif folder == 'optional_labs/lab_02_heat':
+    elif folder == 'optional_labs/heat':
         box(3.5, 1.2, 4, 2.2, 'Heat-transfer wall\nArea A; coefficient U')
         arrow([(0.5, 2.9), (3.5, 2.9)], orange)
         arrow([(7.5, 2.9), (10.5, 2.9)], orange)
@@ -55,7 +55,7 @@ def system_diagram(folder):
         text(9.2, .95, 'Cold inlet\nṁc, Tc,in')
         text(1.8, .95, 'Cold outlet\nTc,out')
         text(5.5, .35, 'Opposite stream directions: heat duty Q̇ passes through the wall')
-    elif folder == 'main_labs/lab_03_distillation':
+    elif folder == 'main_labs/lab_02_distillation':
         box(4.2, 1.15, 2, 2.25, 'Column\nIdeal trays')
         for y in [1.5, 2, 2.5, 3]:
             ax.plot([4.35, 4.65], [y, y], color=ink)
@@ -138,7 +138,7 @@ The pump supplies 26.5 m, so the actual intersection should lie at a higher flow
     print(f"Required = {ex_required:.2f} m; pump = {ex_available:.2f} m")
     print(f"Head surplus = {ex_available-ex_required:.2f} m")
     ''', 'Copy the cell and change only ex_D to 0.050 m. Predict the direction of the loss change first. Then change the trial flow to 4 L/s. Which term changes most?'),
-    'optional_labs/lab_02_heat': ('''### Worked example: heat a small cold-water stream
+    'optional_labs/heat': ('''### Worked example: heat a small cold-water stream
 Trace the orange stream left to right and the blue stream right to left.
 Use an easier target first: heat 0.5 kg/s of water from 15 to 35 °C using
 1.0 kg/s of hot water entering at 70 °C. Both **specific heat capacities**
@@ -181,7 +181,7 @@ Only then calculate area. Expected results: 41.8 kW, 60 °C, and about 1.62 m².
     print(f"Required area = {ex_area:.2f} m²")
     print("Energy-balance residual / W:", ex_Ch*(ex_Thi-ex_Tho)-ex_duty)
     ''', 'Copy the cell and raise the cold outlet target to 45 °C. Predict whether area rises or falls. Then try 75 °C: inspect both terminal differences and explain why this target fails before asking the helper to evaluate LMTD.'),
-    'main_labs/lab_03_distillation': ('''### Worked example: balances and the first two steps
+    'main_labs/lab_02_distillation': ('''### Worked example: balances and the first two steps
 The feed enters between the two column sections. A total condenser returns part
 of the condensed overhead as reflux; the rest leaves as distillate. For a simple
 case take F = 100 kmol/h, zF = 0.5, xD = 0.9, xB = 0.1 and R = 3.
@@ -229,7 +229,7 @@ This example stops after two steps; it is not a complete stage counter.
     plt.xlabel("Liquid mole fraction x"); plt.ylabel("Vapour mole fraction y")
     plt.legend(); plt.grid(); plt.show()
     ''', 'Change R to 5 and compare the first two steps. Before extending the loop, add an if/else that selects the stripping line when x < zF. Explain why always using the rectifying line would fail below the feed.'),
-    'optional_labs/lab_04_absorption': ('''### Worked example: follow a solute through two contacts
+    'optional_labs/absorption': ('''### Worked example: follow a solute through two contacts
 Gas enters the bottom and solvent enters the top. Count contacts from the top,
 where the clean-gas target and fresh-solvent composition are known.
 For a small example use Gs = 100 kmol/h, Ls = 300 kmol/h, m = 1.5,
