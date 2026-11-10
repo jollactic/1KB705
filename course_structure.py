@@ -1,8 +1,9 @@
 """Course roles shared by generated student and solution notebooks."""
 import nbformat
+from four_hour_format import apply_four_hour_format
 
-ROLES = {'preparation/lab_00_balances':'preparation','main_labs/lab_01_flow':'main','main_labs/lab_03_distillation':'main',
-         'optional_labs/lab_02_heat':'optional','optional_labs/lab_04_absorption':'optional'}
+ROLES = {'preparation/lab_00_balances':'preparation','main_labs/lab_01_flow':'main','main_labs/lab_02_distillation':'main',
+         'optional_labs/heat':'optional','optional_labs/absorption':'optional'}
 
 
 def apply_course_role(notebook,folder):
@@ -10,22 +11,22 @@ def apply_course_role(notebook,folder):
     notebook.metadata['course_role']=role
     notebook.cells=[c for c in notebook.cells if not c.metadata.get('course_role_banner')]
     if role=='main':
-        message='''**Main course lab.** The two main labs are **Lab 1 (flow and
-pumps) and Lab 3 (distillation)**. Use Lab 00 for preparation if needed.
-Complete the tasks and recommendation as part of the main lab work. Labs 2
-and 4 are optional self-study and are not prerequisites for this lab.'''
+        message='''**Main course lab.** The two main labs are **Lab 01 (flow and
+pumps) and Lab 02 (distillation)**. Use Lab 00 for preparation if needed.
+Complete the four-hour route as part of the main lab work. Heat and absorption
+are optional self-study and are not prerequisites for this lab.'''
     elif role=='optional':
         message='''**Optional self-study lab.** Explore this extra material independently
-if you are interested. The main course labs are **Lab 1 (flow and pumps) and
-Lab 3 (distillation)**. There is **no required submission or assessment** for
+if you are interested. The main course labs are **Lab 01 (flow and pumps) and
+Lab 02 (distillation)**. There is **no required submission or assessment** for
 this optional lab. Worked examples, supplied calculations and the separate solution
 notebook support self-checking. The six-hour outline is a suggested pace for the
 full notebook; choose individual sections or work at your own pace, alone or
 with a partner. Lab 00 can help with balance fundamentals.'''
     else:
         message='''**Preparation and practice.** Use this introductory balance workshop
-before the main labs if needed. The main course labs are **Lab 1 (flow and
-pumps) and Lab 3 (distillation)**. This preparation is not an additional assessed
+before the main labs if needed. The main course labs are **Lab 01 (flow and
+pumps) and Lab 02 (distillation)**. This preparation is not an additional assessed
 main lab; use the completed solution to check your work.'''
     banner=nbformat.v4.new_markdown_cell(message)
     banner.metadata['course_role_banner']=True
@@ -63,4 +64,5 @@ main lab; use the completed solution to check your work.'''
         elif role=='preparation':
             cell.source=cell.source.replace('Submit your completed answer cells and a short explanation (150–250 words) of',
                 'For preparation, complete the answer cells and write a short explanation (150–250 words) of')
+    notebook=apply_four_hour_format(notebook,folder)
     return notebook

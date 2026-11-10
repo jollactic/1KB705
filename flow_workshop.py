@@ -1,4 +1,4 @@
-"""Lab 1: supplied pump performance and fixed-duty design workshop content."""
+"""Lab 01: supplied pump performance and fixed-duty design workshop content."""
 import nbformat
 from lab_inputs import MAIN_INPUTS
 

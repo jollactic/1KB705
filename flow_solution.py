@@ -1,4 +1,4 @@
-"""Reference answers for Lab 1's variable-efficiency, fixed-duty edition."""
+"""Reference answers for Lab 01's variable-efficiency, fixed-duty edition."""
 FLOW_DISCUSSIONS = [r'''
 **Hand check and system boundary.** At 3 L/s in the 65 mm pipe,
 $v=0.003/[\pi(0.065)^2/4]=0.90408$ m/s. With the determined total K = 8,
@@ -174,3 +174,20 @@ assuming the same savings apply to both control methods.''','''
             print(f"D={D*1000:.0f} mm: extra valve head={valve_loss:.3f} m; fixed-speed electrical input={full_speed['electrical']:.2f} W")
         ''')
 }
+
+
+FLOW_DISCUSSIONS[2] += r"""
+
+**Example end-of-Part-4 decision (100–150 words).**
+
+I select the 50 mm pipe with speed ratio about 0.9055 for exactly 3 L/s.
+It passes the assumed speed and operating-band limits and needs about 887 W
+electrical, or 3549 kWh/year at 4000 hours. Its ten-year pipe-plus-electricity
+cost is about €13099 at €0.20/kWh, lower than the 65 and 80 mm options.
+I reject 80 mm on this cost criterion, although it uses the least electricity.
+The 50 mm option remains screened feasible over the specified roughness range.
+This choice depends on the illustrative prices: at €0.40/kWh, 65 mm becomes
+preferable. Actual pipe quotations, tested pump data, motor ratings and suction
+conditions are needed before procurement. The energy comparison holds delivered
+volume constant and includes motor and drive losses.
+"""

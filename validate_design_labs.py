@@ -15,8 +15,8 @@ SCENARIOS = {
          'assert chosen["flow"] == .003\nassert diameters[best_index] == .065\nassert chosen["feasible"]'),
         ('higher fixed duty has no feasible single-pump candidate',
          {1:'required_flow_Lps = 6.0'},
-         'assert not feasible_mask.any()\nassert best_index is None\nassert arrangement_results[("A","parallel")]["feasible"]')],
-    'optional_labs/lab_02_heat': [
+         'assert not feasible_mask.any()\nassert best_index is None')],
+    'optional_labs/heat': [
         ('no fouling allowance', {2:'design_R = 0.0'},
          'assert np.isclose(fouled_sized_area,area)\nassert np.isclose(enlarged_design[1],55)'),
         ('larger allowance and narrower flow range', {2:'design_R = .001',
@@ -24,7 +24,7 @@ SCENARIOS = {
          'assert fouled_sized_area > area\nassert np.isclose(enlarged_design[1],55)'),
         ('free backup electricity favours lower capital', {2:'trim_electricity_price = 0.0'},
          'assert np.isclose(heat_best["area"],8.13059)\nassert heat_best["trim_kw"]>0')],
-    'main_labs/lab_03_distillation': [
+    'main_labs/lab_02_distillation': [
         ('low reflux with less efficient trays', {1:'R = 1.6', 3:'selected_tray_efficiency = .50'},
          'assert N_ideal > 11\nassert selected_trays == int(np.ceil((N_ideal-1)/.50))'),
         ('higher reflux and different purity policy', {1:'R = 3.5',
@@ -33,7 +33,7 @@ SCENARIOS = {
          'assert N_ideal < 11\nassert len(purity_results) == 2\nassert selected_trays == int(np.ceil((N_ideal-1)/.80))'),
         ('increased feed constrains reflux policy', {2:'comparison_feed = 120.0'},
          'assert column_best["multiple"]==1.8\nassert column_best["V"]<=190\nassert len(eligible_columns)==1')],
-    'optional_labs/lab_04_absorption': [
+    'optional_labs/absorption': [
         ('low solvent rate loses uncertainty margin', {1:'solvent_multiple = 1.1'},
          'assert np.isnan(robustness[-1][2])\nassert np.isclose(Ls,1.1*Lmin)'),
         ('larger solvent rate and alternative internals', {1:'solvent_multiple = 2.5',
@@ -50,7 +50,8 @@ def main():
         assert notebook.metadata['teaching_variant'] == 'design-support'
         analyses = [c for c in notebook.cells if 'design_analysis' in c.metadata]
         decisions = [c for c in notebook.cells if 'design_answer' in c.metadata]
-        assert len(analyses) == len(decisions) == 4
+        expected=3 if folder=='main_labs/lab_01_flow' else 4
+        assert len(analyses) == len(decisions) == expected
         assert all('# TODO:' not in c.source for c in notebook.cells)
         for name, overrides, checks in scenarios:
             sources = []

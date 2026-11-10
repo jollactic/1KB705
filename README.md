@@ -1,13 +1,13 @@
 # Design workshops — Kemisk apparatteknik (1KB705)
 
-The **main course labs are Lab 1 (flow and pumps) and Lab 3 (distillation)**.
-Use Lab 00 for preparation. Labs 2 (heat recovery) and 4 (absorption) are
+The **main course labs are Lab 01 (flow and pumps) and Lab 02 (distillation)**.
+Use Lab 00 for preparation. Heat recovery and absorption are
 **optional self-study extras** for interested students, with no required submission
 or assessment. They are not prerequisites for the main labs.
 
-Recommended route: **Lab 00 (as needed) → Lab 1 → Lab 3**. Explore Lab 2
-or Lab 4 independently if interested; each includes worked examples, a helper
-file and a complete solution for self-checking. Lab numbers are retained; folders
+Recommended route: **Lab 00 (as needed) → Lab 01 → Lab 02**. Explore heat
+or absorption independently if interested; each includes worked examples, a helper
+file and a complete solution for self-checking. The main labs are numbered 01 and 02; optional folders
 are grouped by their role. Use the updated paths below for notebooks and Colab.
 
 ```text
@@ -15,10 +15,10 @@ preparation/
   lab_00_balances/
 main_labs/
   lab_01_flow/
-  lab_03_distillation/
+  lab_02_distillation/
 optional_labs/
-  lab_02_heat/
-  lab_04_absorption/
+  heat/
+  absorption/
 ```
 
 Each lab folder contains its student notebook, solution notebook and `helpers.py`.
@@ -29,11 +29,11 @@ mixing, splitting, water evaporation (mass balance only), stream heating,
 adiabatic temperature mixing and tank accumulation. Students write equations
 and units before running supplied checks. No programming or prior balance
 course is assumed. Plan about three hours of core work, with optional practice
-up to six hours. A separate completed `lab_solution.ipynb` is included.
+up to four hours. A separate completed `lab_solution.ipynb` is included.
 
-The two main labs are each scoped for approximately **six hours** of student
-work: about 12 hours total, excluding preparation. The optional labs each offer
-about six hours of material, which may be explored selectively at your own pace.
+The two main labs are each scoped for approximately **four hours** of student
+work: about 8 hours total, excluding preparation. The optional labs each offer
+a four-hour self-study route plus further exploration, which may be explored selectively at your own pace.
 This **`jolla-design-support`** branch provides a version with less coding and
 more engineering design. The original programming-oriented version remains on
 `jolla`. Students run supplied numerical routines, change clearly marked
@@ -43,10 +43,10 @@ No Python algorithms, loops or plotting code need to be written or assessed.
 | Folder | Design problem | Course role | Student decisions |
 | --- | --- | --- | --- |
 | [preparation/lab_00_balances](preparation/lab_00_balances/lab.ipynb) | First mass and heat balances | Preparation | Write equations, check assumptions and physical limits |
-| [main_labs/lab_01_flow](main_labs/lab_01_flow/lab.ipynb) | Water-transfer line and pump | **Main lab** | Select diameter/speed at fixed delivery, compare lifecycle cost, choose series/parallel arrangements |
-| [main_labs/lab_03_distillation](main_labs/lab_03_distillation/lab.ipynb) | Binary separation | **Main lab** | Choose reflux/purity policy and tray-height assumptions |
-| [optional_labs/lab_02_heat](optional_labs/lab_02_heat/lab.ipynb) | Heat recovery and fouling | Optional self-study | Choose fouling allowance, area and operating flow |
-| [optional_labs/lab_04_absorption](optional_labs/lab_04_absorption/lab.ipynb) | Solvent rate and column size | Optional self-study | Choose solvent policy, compare internals and robustness |
+| [main_labs/lab_01_flow](main_labs/lab_01_flow/lab.ipynb) | Water-transfer line and pump | **Main lab** | Select diameter/speed at fixed delivery and compare lifecycle cost |
+| [main_labs/lab_02_distillation](main_labs/lab_02_distillation/lab.ipynb) | Binary separation | **Main lab** | Choose a constrained reflux policy and tray-height assumptions |
+| [optional_labs/heat](optional_labs/heat/lab.ipynb) | Heat recovery and fouling | Optional self-study | Choose fouling allowance, area and operating flow |
+| [optional_labs/absorption](optional_labs/absorption/lab.ipynb) | Solvent rate and column size | Optional self-study | Choose solvent policy, compare internals and robustness |
 
 Each folder contains `lab.ipynb` and an independent `helpers.py`. There are no
 cross-lab imports, API keys, remote data requirements, or repository-specific URLs.
@@ -64,15 +64,15 @@ evidence, a decision and what could change it. They keep at least one rejected
 design and explain why it fails or is less attractive.
 The diagrams are embedded in the notebooks, so no image downloads are required.
 
-Lab 1 additionally plots synthetic head, pump efficiency, shaft input and electrical
+Lab 01 additionally plots synthetic head, pump efficiency, shaft input and electrical
 input with BEP and an assumed operating band. Its core compares diameters at
 exactly 3 L/s using speed control, then compares illustrative pipe-plus-electricity
-costs. A short core task compares single, series and parallel pumps for separate
-high-flow and high-head duties. Pump curves, operating limits and installed costs
+costs. Parts 5 (pump arrangements) and 6 (separate report) have been removed;
+Part 4 ends with a brief decision in the notebook. Pump curves, operating limits and installed costs
 are teaching assumptions, not equipment specifications. Shaft energy and electrical
 energy are distinguished; motor and drive losses are included.
 
-Labs 2–4 use the same design-workshop approach, with added service-boundary
+distillation and the optional workshops use the same design-workshop approach, with added service-boundary
 diagrams, explicit feasibility constraints, illustrative costs and a core changed-
 duty or robustness challenge:
 
@@ -86,7 +86,7 @@ duty or robustness challenge:
   equilibrium and HETP, enforcing the same removal and a six-metre active-height
   limit; distinguish minimum height from minimum modelled service cost.
 
-These tasks share each lab's existing six-hour budget; they do not require new
+These tasks share each workshop's four-hour route; they do not require new
 student algorithms. All price/limit/utility assumptions are stated in the lab.
 
 ## Run locally
@@ -114,20 +114,23 @@ Colab normally supplies NumPy and Matplotlib. The notebooks use no SciPy feature
 
 ## Teaching and assessment
 
-Assessment and submission guidance below applies to **Labs 1 and 3 only**.
-Lab 00 is preparation/practice. Labs 2 and 4 are optional, unassessed self-study;
+Assessment and submission guidance below applies to **Labs 01 and 02 only**.
+Lab 00 is preparation/practice. the optional heat and absorption labs are optional, unassessed self-study;
 their questions, recommendations and solutions are learning aids, not submission
 requirements. No optional-lab result is needed to complete the main route.
 
-The six-hour estimate includes setup (30 min), balance and feasibility review (75 min),
-operating-policy decisions and checks (90 min), design comparison (75 min), sensitivity and a break
-(45 min), and reporting (45 min). Pilot these timings with a small student group;
-they are estimates, not measured completion times. Extensions are optional.
+Main Lab 01 uses 20/60/70/90 minutes for Parts 1–4, including a short
+break and a 100–150 word decision in Part 4; there is no separate report.
+Main Lab 02 uses 30/40/50/65/30/25 minutes for Parts 1–6, including a break
+and a 100–150 word recommendation. The broad purity sweep is reference material.
+Each totals four hours. Optional workshops have a four-hour suggested route;
+their robustness section and extensions are further exploration. Pilot these
+timings with students; they are workload estimates, not measured completion times.
 
 Suggested assessment: balances, units and model understanding 25%; design choices
 and tradeoffs 35%; robustness and limitations 25%; clear, reproducible reporting
 15%. Students should submit a completed notebook and its
-300–500 word recommendation. Grade reasoning and checks, not matching a single
+100–150 word decision (in Part 4 for flow, Part 6 for distillation). Grade reasoning and checks, not matching a single
 rounded stage count. No marks are assigned for writing Python. `INSTRUCTOR_NOTES.md` contains benchmark results; remove it
 from a student distribution if you want to withhold those values.
 
@@ -153,13 +156,17 @@ stage-count conventions are stated in the notebooks/helper docstrings.
 
 ## Maintainer checks
 
+`four_hour_format.py` maintains the four-hour routes, removes flow Parts 5 and 6,
+and keeps student and solution scopes aligned. The optional robustness sections
+remain available as further exploration outside their four-hour routes.
+
 ```sh
 python build_labs.py
 python validate_labs.py
 python validate_design_labs.py
 ```
 
-`flow_workshop.py` is the current Lab 1 content source; its numerical routines
+`flow_workshop.py` is the current Lab 01 content source; its numerical routines
 and plotting functions live in `main_labs/lab_01_flow/helpers.py`. It overrides the older
 flow template retained in the common builder. `flow_solution.py` holds its current
 question-by-question instructor answers. Use `python build_labs.py --lab main_labs/lab_01_flow`
@@ -174,7 +181,7 @@ The introductory authoring module contains answers; student distributions need
 only its notebook and matching helper file.
 
 `workshop_extensions.py` supplies the core comparison prompts, diagrams and
-analysis cells for Labs 2–4; their numerical design comparisons live in each
+analysis cells for distillation and the optional workshops; their numerical design comparisons live in each
 lab's own `helpers.py`. `workshop_solutions.py` adds the matching discussions
 and updated recommendation openings. Use `--lab` with the corresponding folder
 to rebuild only one lab and its solution.
@@ -215,7 +222,7 @@ This requires the `nbclient` and `ipykernel` dependencies in `requirements.txt`.
 For environments with restricted access to the user profile, use
 `python build_solutions.py --runtime-dir .jupyter_runtime`.
 Use `--no-execute` only when intentionally generating notebooks without outputs.
-Lab 1's current worked answers live in `flow_solution.py`. The original worked
+Lab 01's current worked answers live in `flow_solution.py`. The original worked
 answers for the other labs live in `solution_content.py`. Question-by-question
 design discussions and additional reference comparisons live in
 `solution_discussion.py`; they explicitly address the questions in each design

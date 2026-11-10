@@ -1,23 +1,23 @@
 # Instructor notes — draft for review
 
-## Main route and optional self-study
+## Main route and optional self-study (four-hour editions)
 
-The main course labs are **Lab 1 (flow and pumps)** and **Lab 3 (distillation)**,
-about six hours each. Lab 00 provides preparation as needed. Labs 2 (heat recovery)
-and 4 (absorption) are optional, unassessed self-study for interested students.
+The main course labs are **Lab 01 (flow and pumps)** and **Lab 02 (distillation)**,
+about four hours each. Lab 00 provides preparation as needed. Heat recovery
+and absorption are optional, unassessed self-study for interested students.
 They have no required submission and can be explored independently and selectively,
 with the worked examples and solution notebooks as learning aids. The assessment
 rubric and submission guidance in these notes apply only to the two main labs.
 Folders are grouped under `preparation/`, `main_labs/` and `optional_labs/`;
 retain the lab numbers, and use the updated paths in the README. Do not require
-optional-lab results to complete Labs 1 or 3. `course_structure.py` maintains these roles and
+optional-lab results to complete Labs 01 or 02. `course_structure.py` maintains these roles and
 their notebook notices across rebuilds.
 
 ## Introductory Lab 00
 
 Use `preparation/lab_00_balances` before the four design labs. Its core is deliberately basic and
 takes about three hours (30/35/35/40/25/15 min, including a short break).
-Optional practice can extend this to four–six hours. Ask students to write
+Optional practice can extend this to four hours. Ask students to write
 boundaries, assumptions, symbolic equations and units before looking at results.
 Do not grade Python. Emphasize that zero residual is an arithmetic check, not
 validation of an assumed physical model. Accept a calculator-first workflow.
@@ -32,7 +32,7 @@ predictions after emptying or overflow. The separate solution covers all core
 questions, a final explanation and the optional exercises.
 
 These labs are designed as computational design exercises, not laboratory
-measurement protocols. Pilot the six-hour workload and review the intended
+measurement protocols. Pilot the four-hour workload and review the intended
 syllabus version before assigning. In this **design-support variant**, students
 need only know how to run a cell, change a parameter and read a table or plot.
 Numerical methods are supplied. No physical equipment or
@@ -60,7 +60,7 @@ the worked example and making the suggested small change. Ask them to predict
 the result aloud before running it. The `ex_` variable prefix separates these
 small examples from the main case. The separation examples show two steps;
 the supplied main-case routine completes the staircase and all feasibility checks.
-Keep the six-hour total by using this example as the start of model development,
+Keep the four-hour total by using this example as the start of model development,
 rather than as an additional activity.
 
 The supplied helper functions intentionally expose reference calculations.
@@ -84,34 +84,35 @@ These values use the stated synthetic base cases and full-final-stage convention
 Completed, executed reference notebooks are saved as `lab_solution.ipynb` in each
 lab folder. They include the small-change exercises, all core tasks, written
 recommendations and optional extensions. Rebuild with `python build_solutions.py`.
-The student notebooks are not modified by that command. Lab 1 now uses variable
+The student notebooks are not modified by that command. Lab 01 now uses variable
 pump efficiency and motor/drive losses, compares diameters at exactly 3 L/s using
-speed control, and includes series/parallel pumps in its core. At default costs,
+speed control, and retains only pipe/speed, energy and cost in its four-hour core. At default costs,
 50 mm minimizes the ten-year pipe-plus-electricity total; 80 mm minimizes
 electricity alone. This supersedes the previous uncontrolled-flow, constant-70%
 efficiency comparison.
 
 Each main solution section now answers the individual design questions explicitly:
 the numerical evidence, selected policy, rejected alternative, margin and limits.
-These discussions are maintained in `solution_discussion.py` for Labs 2–4 and
-`flow_solution.py` for Lab 1. Extra reference
+These discussions are maintained in `solution_discussion.py` for distillation and the optional workshops and
+`flow_solution.py` for Lab 01. Extra reference
 comparisons in the distillation and absorption solutions reproduce the alternative
 cases quoted in the prose. The written answers assume default settings and do
 not automatically change when a reader edits a parameter.
 
 | Lab | Benchmarks |
 | --- | --- |
-| 1 | Uncontrolled 65 mm, speed 1: Q = 4.03456 L/s, electrical input = 1228.45 W; outside the assumed band. At controlled 3 L/s, 50/65/80 mm use 3549.47/2764.07/2581.29 kWh/year. Ten-year costs at €0.20/kWh: €13098.94/14028.14/17162.57. Duty A: parallel, 1436.91 W total. Duty B: series, 2479.49 W total. |
+| 1 | Uncontrolled 65 mm, speed 1: Q = 4.03456 L/s, electrical input = 1228.45 W; outside the assumed band. At controlled 3 L/s, 50/65/80 mm use 3549.47/2764.07/2581.29 kWh/year. Ten-year costs at €0.20/kWh: €13098.94/14028.14/17162.57. The former paired-pump task is excluded from this four-hour lab. |
 | 2 | Duty = 167.2 kW, hot outlet = 48.3333 °C, clean area = 8.13059 m². At added resistance 0.0006 m² K/W and fixed clean-sized area: cold outlet = 49.0093 °C. |
 | 3 | D = 44.4444 kmol/h, B = 55.5556 kmol/h, R_min = 1.35209. At R = 2.5: 11 full ideal stages including the reboiler; ten ideal trays. At E_o = 0.65: 16 installed trays and 7.2 m active-height estimate. |
 | 4 | L_min = 135 kmol/h; selected L = 202.5 kmol/h; X_out = 0.0133333; removal = 2.7 kmol/h. Five full ideal stages. At E_o = 0.60: nine trays, 4.05 m active height. Packed height = 3–6 m; illustrative dry gradient = 47.9272 Pa/m, giving about 144–288 Pa. |
 
-Lab 1: the synthetic head and shaft-input curves define pump efficiency jointly.
+Lab 01: the synthetic head and shaft-input curves define pump efficiency jointly.
 Motor and drive efficiencies remain constant at 0.90 and 0.96. Neither an
 intersection nor a low price makes a point eligible outside the assumed speed
-or per-pump BEP band. Pair powers must sum both running pumps. The 80 mm line
-for changed duties is deliberate: it is not the selected default 50 mm base line.
-The declared six-hour allocation is 30/60/75/90/60/45 minutes, including a break.
+or per-pump BEP band. Pair powers must sum both running pumps. Paired-pump helper utilities remain available for future teaching, but are not assigned.
+The current four-hour flow route is Parts 1–4 only, timed 20/60/70/90
+minutes including a short break and a 100–150 word decision. The former paired-
+pump task and separate report have been removed from student and solution notebooks.
 Separate procurement checks from the synthetic feasibility screen. The original
 3517 kWh figure was shaft energy under a different efficiency assumption and
 must not be reused as electrical energy in this edition.
@@ -128,7 +129,7 @@ At zero added resistance the smallest wins; at 0.001 m² K/W the largest wins.
 The subsequent cold-flow envelope uses the selected discrete area, not an
 unrelated area. Small residual trim duty near the exact target is rounding.
 
-Lab 3: the final horizontal step generally overshoots xB. Eleven stages is the
+Lab 02: the final horizontal step generally overshoots xB. Eleven stages is the
 deliberately conservative integer count, not an interpolated value. The total
 condenser is not a stage; the equilibrium partial reboiler is. Subtract the reboiler
 before converting ideal trays to actual trays. Constant-alpha equilibrium lacks
@@ -140,7 +141,7 @@ kmol/h. At 120 kmol/h feed it remains eligible with V=183.134 kmol/h; ratio
 2.0 then fails capacity. Latent heat and cost parameters are synthetic, not
 a replacement for enthalpy data or vendor hydraulic calculations.
 
-Lab 4: use mole ratios throughout, not a mixture of ratios and fractions.
+Absorption: use mole ratios throughout, not a mixture of ratios and fractions.
 The staircase starts at the top, and the final vertical move may exceed Yin.
 For fresh solvent, the absorption factor A = L/(mG) gives the independent check
 Y_(N+1)/Yout = 1 + A + ... + A^N. HETP and tray efficiency represent different
@@ -167,3 +168,14 @@ unverified in every case. Expanded answers are in `workshop_solutions.py`.
 cells, and verifies selected physical benchmarks, limiting cases and invalid-input
 behaviour. It does not execute student-written answers, validate Colab's live UI,
 or measure completion time. No live Colab session has been used to test these drafts.
+
+
+## Four-hour scope and numbering
+
+The main labs are Lab 01 (flow) and Lab 02 (distillation). Optional workshops
+are named heat and absorption, without lab numbers. Flow has Parts 1–4 only;
+do not assign the former pump-arrangement task or a separate Part 6 report.
+Its brief decision is included in Part 4. Distillation keeps its six shorter
+sections (30/40/50/65/30/25 minutes), with the purity sweep as reference material.
+Optional heat and absorption each have a suggested four-hour route; robustness
+and further extensions are extra. These scopes replace older six-hour plans.

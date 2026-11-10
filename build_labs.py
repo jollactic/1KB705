@@ -100,7 +100,7 @@ energy is added or removed. Match the labels to the variables in the model below
     nb = apply_course_role(nb,folder)
     nbf.write(nb, path / 'lab.ipynb')
 
-write_lab('main_labs/lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
+write_lab('main_labs/lab_01_flow', 'Lab 01 — Pipe flow and pump selection',
     'Design a water-transfer line between two open tanks. Select a pipe and pump operating speed, then defend the energy implications.',
     r'''## Model and assumptions
 
@@ -144,7 +144,7 @@ write_lab('main_labs/lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
     ('5. Uncertainty and break — 45 minutes', 'Take a 10-minute break. For your chosen design vary roughness from 1e-6 to 2e-4 m and efficiency from 0.55 to 0.80. Identify which assumption changes the recommendation most. Describe what additional data a real pump selection needs.', '# TODO: sensitivity study and limiting-case checks.')],
     'Add a second pump in parallel by combining flows at equal head. Compare its operating point with twice the single-pump flow.')
 
-write_lab('optional_labs/lab_02_heat', 'Lab 2 — Heat recovery with a countercurrent exchanger',
+write_lab('optional_labs/heat', 'Lab 2 — Heat recovery with a countercurrent exchanger',
     'Recover heat from a warm process stream to preheat water. Size an exchanger and predict how fouling changes its performance.',
     r'''## Model and assumptions
 
@@ -179,7 +179,7 @@ write_lab('optional_labs/lab_02_heat', 'Lab 2 — Heat recovery with a countercu
     ('5. Sensitivity and break — 45 minutes', 'Take a 10-minute break. Vary cold mass flow from 0.5 to 1.8 kg/s at fixed installed area and assumed U. Discuss the tradeoff between outlet temperature and recovered heat. Explain why holding U constant may be questionable and which hydraulic calculation is missing.', '# TODO: parameter sweep and engineering interpretation.')],
     'Introduce a heat-loss term and determine what additional measurements would be needed to distinguish fouling from heat loss.')
 
-write_lab('main_labs/lab_03_distillation', 'Lab 3 — Binary distillation and ideal stages',
+write_lab('main_labs/lab_02_distillation', 'Lab 02 — Binary distillation and ideal stages',
     'Design a teaching-model binary distillation column, using graphical stepping and a numerical stage counter. Explore the cost of demanding higher purity.',
     r'''## Model and assumptions
 
@@ -213,7 +213,7 @@ write_lab('main_labs/lab_03_distillation', 'Lab 3 — Binary distillation and id
     ('5. Real trays and break — 45 minutes', 'Take a 10-minute break. For the base case, convert ideal trays to installed trays using overall tray efficiency E_o = 0.50, 0.65 and 0.80: ceil((N_ideal-1)/E_o). The reboiler is excluded from the tray conversion. Estimate active height using 0.45 m spacing times installed tray count. Explain the difference between overall and Murphree efficiency and the omitted height allowances.', '# TODO: table of installed trays and active heights.')],
     'Replace constant relative volatility with instructor-supplied equilibrium data; interpolate monotonically and compare stage counts.')
 
-write_lab('optional_labs/lab_04_absorption', 'Lab 4 — Gas absorption and column height',
+write_lab('optional_labs/absorption', 'Lab 4 — Gas absorption and column height',
     'Remove a dilute solute from a gas using a countercurrent solvent. Connect material balances, ideal stages, efficiency and a hydraulic screening calculation.',
     r'''## Model and assumptions
 
