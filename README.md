@@ -1,5 +1,15 @@
 # Design workshops — Kemisk apparatteknik (1KB705)
 
+The **main course labs are Lab 1 (flow and pumps) and Lab 3 (distillation)**.
+Use Lab 00 for preparation. Labs 2 (heat recovery) and 4 (absorption) are
+**optional self-study extras** for interested students, with no required submission
+or assessment. They are not prerequisites for the main labs.
+
+Recommended route: **Lab 00 (as needed) → Lab 1 → Lab 3**. Explore Lab 2
+or Lab 4 independently if interested; each includes worked examples, a helper
+file and a complete solution for self-checking. Existing folder numbers and
+paths are retained so notebook links and Colab workflows continue to work.
+
 Start with **`lab_00`**, an introductory workshop on choosing system boundaries
 and writing elementary total-mass, component and heat balances. It includes
 mixing, splitting, water evaporation (mass balance only), stream heating,
@@ -8,20 +18,22 @@ and units before running supplied checks. No programming or prior balance
 course is assumed. Plan about three hours of core work, with optional practice
 up to six hours. A separate completed `lab_solution.ipynb` is included.
 
-Four draft Jupyter labs, each scoped for approximately **six hours** of student work.
+The two main labs are each scoped for approximately **six hours** of student
+work: about 12 hours total, excluding preparation. The optional labs each offer
+about six hours of material, which may be explored selectively at your own pace.
 This **`jolla-design-support`** branch provides a version with less coding and
 more engineering design. The original programming-oriented version remains on
 `jolla`. Students run supplied numerical routines, change clearly marked
 **DESIGN SETTINGS**, compare alternatives, and write their recommendations.
 No Python algorithms, loops or plotting code need to be written or assessed.
 
-| Folder | Design problem | Principal syllabus alignment | Student decisions |
+| Folder | Design problem | Course role | Student decisions |
 | --- | --- | --- | --- |
-| `lab_00` | First mass and heat balances | Conservation, system boundaries, units, accumulation | Write equations, check assumptions and physical limits |
-| `lab_01_flow` | Water-transfer line and pump | Flowing fluids, pressure losses, pumps | Select diameter/speed at fixed delivery, compare lifecycle cost, choose series/parallel arrangements |
-| `lab_02_heat` | Heat recovery and fouling | Heat exchangers, energy balances | Choose fouling allowance, area and operating flow |
-| `lab_03_distillation` | Binary separation | Material balances, graphical/numerical stages, efficiency | Choose reflux/purity policy and tray-height assumptions |
-| `lab_04_absorption` | Solvent rate and column size | Absorption, stages, column height, porous beds | Choose solvent policy, compare internals and robustness |
+| [lab_00](lab_00/lab.ipynb) | First mass and heat balances | Preparation | Write equations, check assumptions and physical limits |
+| [lab_01_flow](lab_01_flow/lab.ipynb) | Water-transfer line and pump | **Main lab** | Select diameter/speed at fixed delivery, compare lifecycle cost, choose series/parallel arrangements |
+| [lab_03_distillation](lab_03_distillation/lab.ipynb) | Binary separation | **Main lab** | Choose reflux/purity policy and tray-height assumptions |
+| [lab_02_heat](lab_02_heat/lab.ipynb) | Heat recovery and fouling | Optional self-study | Choose fouling allowance, area and operating flow |
+| [lab_04_absorption](lab_04_absorption/lab.ipynb) | Solvent rate and column size | Optional self-study | Choose solvent policy, compare internals and robustness |
 
 Each folder contains `lab.ipynb` and an independent `helpers.py`. There are no
 cross-lab imports, API keys, remote data requirements, or repository-specific URLs.
@@ -88,6 +100,11 @@ commit and lab path. No GitHub account or URL is assumed by this draft.
 Colab normally supplies NumPy and Matplotlib. The notebooks use no SciPy features.
 
 ## Teaching and assessment
+
+Assessment and submission guidance below applies to **Labs 1 and 3 only**.
+Lab 00 is preparation/practice. Labs 2 and 4 are optional, unassessed self-study;
+their questions, recommendations and solutions are learning aids, not submission
+requirements. No optional-lab result is needed to complete the main route.
 
 The six-hour estimate includes setup (30 min), balance and feasibility review (75 min),
 operating-policy decisions and checks (90 min), design comparison (75 min), sensitivity and a break

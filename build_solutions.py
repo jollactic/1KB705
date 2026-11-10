@@ -13,6 +13,7 @@ import nbformat
 from nbclient import NotebookClient
 from solution_content import SOLUTIONS
 from solution_discussion import DISCUSSIONS, COMPARISON_CODE
+from course_structure import apply_course_role
 
 ROOT = Path(__file__).parent.resolve()
 
@@ -94,6 +95,7 @@ def build(execute=True,lab=None):
                 code(COMPARISON_CODE[folder])]
         notebook.cells[0].source += '\n\n**Completed solution**'
         notebook.metadata['solution_source'] = 'build_solutions.py and solution_content.py'
+        notebook = apply_course_role(notebook,folder)
         nbformat.validate(notebook)
         if execute:
             client = NotebookClient(notebook, timeout=120, kernel_name='python3',

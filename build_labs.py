@@ -6,6 +6,7 @@ import nbformat as nbf
 from teaching_materials import system_diagram, EXAMPLES, GUIDANCE
 from design_materials import apply_design_version
 from lab_inputs import MAIN_INPUTS
+from course_structure import apply_course_role
 
 ROOT = Path(__file__).parent
 SELECTED_LAB = None
@@ -96,6 +97,7 @@ energy is added or removed. Match the labels to the variables in the model below
     else:
         from workshop_extensions import enrich_workshop
         nb = enrich_workshop(nb, folder, md, code)
+    nb = apply_course_role(nb,folder)
     nbf.write(nb, path / 'lab.ipynb')
 
 write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',

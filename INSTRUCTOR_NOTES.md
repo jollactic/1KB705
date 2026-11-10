@@ -1,5 +1,17 @@
 # Instructor notes — draft for review
 
+## Main route and optional self-study
+
+The main course labs are **Lab 1 (flow and pumps)** and **Lab 3 (distillation)**,
+about six hours each. Lab 00 provides preparation as needed. Labs 2 (heat recovery)
+and 4 (absorption) are optional, unassessed self-study for interested students.
+They have no required submission and can be explored independently and selectively,
+with the worked examples and solution notebooks as learning aids. The assessment
+rubric and submission guidance in these notes apply only to the two main labs.
+Keep the original folder names for stable links; do not require optional-lab
+results to complete Labs 1 or 3. `course_structure.py` maintains these roles and
+their notebook notices across rebuilds.
+
 ## Introductory Lab 00
 
 Use `lab_00` before the four design labs. Its core is deliberately basic and

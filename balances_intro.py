@@ -4,6 +4,7 @@ from io import BytesIO
 import base64
 import inspect
 import nbformat
+from course_structure import apply_course_role
 
 ROOT=Path(__file__).parent
 
@@ -370,6 +371,7 @@ Use the same equations and supplied cells; no new algorithms are needed.
     notebook=nbformat.v4.new_notebook(cells=cells,metadata={
         'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},
         'language_info':{'name':'python'},'teaching_variant':'introductory-balances'})
+    notebook = apply_course_role(notebook,'lab_00')
     nbformat.validate(notebook)
     if execute:
         from nbclient import NotebookClient
