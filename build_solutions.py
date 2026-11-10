@@ -6,25 +6,44 @@ Requires nbclient and a working Python 3 Jupyter kernel for execution.
 from pathlib import Path
 import argparse
 import copy
+import inspect
 import os
 import textwrap
 import nbformat
 from nbclient import NotebookClient
 from solution_content import SOLUTIONS
+from solution_discussion import DISCUSSIONS, COMPARISON_CODE
+from course_structure import apply_course_role
 
 ROOT = Path(__file__).parent.resolve()
 
 
 def markdown(source):
-    return nbformat.v4.new_markdown_cell(textwrap.dedent(source).strip())
+    return nbformat.v4.new_markdown_cell(inspect.cleandoc(source))
 
 
 def code(source):
     return nbformat.v4.new_code_cell(textwrap.dedent(source).strip())
 
 
-def build(execute=True):
+def build(execute=True,lab=None):
+    if lab in (None,'preparation/lab_00_balances'):
+        from balances_intro import build_intro
+        build_intro(solution=True,execute=execute)
     for folder, answers in SOLUTIONS.items():
+        if lab and folder != lab:
+            continue
+        discussions = DISCUSSIONS[folder]
+        if folder == 'main_labs/lab_01_flow':
+            from flow_solution import FLOW_ANSWERS, FLOW_DISCUSSIONS
+            answers, discussions = FLOW_ANSWERS, FLOW_DISCUSSIONS
+        else:
+            from workshop_solutions import EXTRA_DISCUSSION, RECOMMENDATION_OPENINGS
+            discussions = list(discussions)
+            discussions[2] += '\n\n' + EXTRA_DISCUSSION[folder]
+            answers = dict(answers)
+            original = answers['recommendation'].split('\n\n',1)
+            answers['recommendation'] = RECOMMENDATION_OPENINGS[folder] + '\n\n' + original[1]
         student = ROOT / folder / 'lab.ipynb'
         notebook = copy.deepcopy(nbformat.read(student, as_version=4))
         cells = []
@@ -34,6 +53,10 @@ def build(execute=True):
                 cell = code(answers['tasks'][task][0])
             elif cell.cell_type == 'markdown' and cell.source.startswith('**Your interpretation:**'):
                 cell = markdown('**Solution and interpretation**\n\n' + answers['tasks'][task][1])
+                task += 1
+            elif cell.cell_type == 'markdown' and 'design_answer' in cell.metadata:
+                index = cell.metadata['design_answer']
+                cell = markdown('**Answers to the design questions — default settings**\n\n' + discussions[index])
                 task += 1
             cells.append(cell)
             if cell.cell_type == 'markdown' and cell.source.startswith('**Try a small change:**'):
@@ -53,13 +76,26 @@ def build(execute=True):
                                 + answers['prediction'] + '\n\n'
                                 'All exercises, including the small-change example and optional '
                                 'extension, are answered below. Use the matching `helpers.py` '
-                                'from this folder. Stage counts follow the student notebook conventions.'))
+                                'from this folder. Stage counts follow the student notebook conventions.\n\n'
+                                '**Reading the answers:** The written interpretations refer to the '
+                                'printed default settings. Changing a setting updates calculated '
+                                'outputs when rerun, but does not automatically rewrite the prose. '
+                                'Alternative feasible choices can be valid when supported by evidence.'))
         # Explicit inline backend ensures plots are stored in notebook outputs.
         first_code = next(i for i, c in enumerate(cells) if c.cell_type == 'code')
         cells.insert(first_code, code('%matplotlib inline'))
         notebook.cells = cells
+        if notebook.metadata.get('teaching_variant') == 'design-support' and folder in COMPARISON_CODE:
+            position = next(i for i,c in enumerate(cells)
+                            if c.cell_type=='markdown' and c.source.startswith('## 6.'))
+            notebook.cells[position:position] = [
+                markdown('### Numerical support for the reference comparisons\n\n'
+                         'These extra calculations reproduce the alternative cases discussed '
+                         'in the answers. They use explicit reference settings.'),
+                code(COMPARISON_CODE[folder])]
         notebook.cells[0].source += '\n\n**Completed solution**'
         notebook.metadata['solution_source'] = 'build_solutions.py and solution_content.py'
+        notebook = apply_course_role(notebook,folder)
         nbformat.validate(notebook)
         if execute:
             client = NotebookClient(notebook, timeout=120, kernel_name='python3',
@@ -79,6 +115,7 @@ def build(execute=True):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--no-execute', action='store_true')
+    parser.add_argument('--lab',help='Build only this lab folder')
     parser.add_argument('--runtime-dir', type=Path,
                         help='Optional writable directory for Jupyter/IPython execution state')
     args = parser.parse_args()
@@ -88,4 +125,4 @@ if __name__ == '__main__':
             directory = args.runtime_dir.resolve()/child
             directory.mkdir(parents=True, exist_ok=True)
             os.environ[variable] = str(directory)
-    build(execute=not args.no_execute)
+    build(execute=not args.no_execute,lab=args.lab)

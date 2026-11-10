@@ -1,15 +1,29 @@
 """Rebuild the authored student notebooks (requires nbformat)."""
 from pathlib import Path
+import inspect
 import textwrap
 import nbformat as nbf
 from teaching_materials import system_diagram, EXAMPLES, GUIDANCE
+from design_materials import apply_design_version
+from lab_inputs import MAIN_INPUTS
+from course_structure import apply_course_role
 
 ROOT = Path(__file__).parent
+SELECTED_LAB = None
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--lab',help='Build only this lab folder')
+    SELECTED_LAB = parser.parse_args().lab
 
 def write_lab(folder, title, intro, theory, starter, tasks, extension):
+    if SELECTED_LAB and folder != SELECTED_LAB:
+        return
+    theory = inspect.cleandoc(theory) + '\n\n' + MAIN_INPUTS[folder]
     path = ROOT / folder
-    path.mkdir(exist_ok=True)
-    md = lambda s: nbf.v4.new_markdown_cell(textwrap.dedent(s).strip())
+    path.mkdir(parents=True,exist_ok=True)
+    # cleandoc handles a heading on the opening line followed by indented text.
+    md = lambda s: nbf.v4.new_markdown_cell(inspect.cleandoc(s))
     code = lambda s: nbf.v4.new_code_cell(textwrap.dedent(s).strip())
     cells = [md(f'# {title}\n\n{intro}'), md('''
     **Time budget: 6 hours, including a short break and submission.** Work in pairs,
@@ -36,7 +50,7 @@ def write_lab(folder, title, intro, theory, starter, tasks, extension):
     from pathlib import Path
     from urllib.request import urlretrieve
 
-    HELPER_URL = ""  # e.g. https://raw.githubusercontent.com/OWNER/REPO/COMMIT/lab_01_flow/helpers.py
+    HELPER_URL = ""  # e.g. https://raw.githubusercontent.com/OWNER/REPO/COMMIT/main_labs/lab_01_flow/helpers.py
     if not Path("helpers.py").exists():
         if not HELPER_URL:
             raise FileNotFoundError("Upload this lab's helpers.py or set HELPER_URL, then rerun.")
@@ -76,24 +90,46 @@ energy is added or removed. Match the labels to the variables in the model below
     and one reason the model could fail. Record any revision this discussion prompted.
     '''), md('## Optional extension\n\n' + extension)]
     nb = nbf.v4.new_notebook(cells=cells, metadata={'kernelspec': {'display_name':'Python 3','language':'python','name':'python3'}, 'language_info':{'name':'python','version':'3.9'}})
+    nb = apply_design_version(nb, folder, md, code)
+    if folder == 'main_labs/lab_01_flow':
+        from flow_workshop import adapt_flow_notebook
+        nb = adapt_flow_notebook(nb, md, code)
+    else:
+        from workshop_extensions import enrich_workshop
+        nb = enrich_workshop(nb, folder, md, code)
+    nb = apply_course_role(nb,folder)
     nbf.write(nb, path / 'lab.ipynb')
 
-write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
+write_lab('main_labs/lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
     'Design a water-transfer line between two open tanks. Select a pipe and pump operating speed, then defend the energy implications.',
     r'''## Model and assumptions
+
     Steady, incompressible, isothermal flow; large open tanks; negligible tank velocities.
     $v=4Q/(\pi D^2)$, $Re=\rho vD/\mu$.
     Use the **Darcy** friction factor (four times the Fanning factor):
     $H_s=\Delta z+(fL/D+\sum K)v^2/(2g)$.
+    For this teaching case, the **combined dimensionless loss coefficient for
+    the bends and valves has been determined to be $\sum K=8$**, referenced to
+    the mean velocity in the connecting pipe. This is a supplied case value,
+    not the number of fittings. Their total head loss is
+    $h_{\mathrm{fittings}}=(\sum K)v^2/(2g)=8v^2/(2g)$, in metres of fluid.
+    It is added to the straight-pipe friction loss and the static elevation rise.
     Laminar: $f=64/Re$. For turbulent flow the helper uses the explicit Haaland
     approximation. The transition region 2300–4000 is deliberately rejected: flag
     those cases instead of silently applying a correlation.
     The illustrative pump curve is $H_p=s^2H_0-aQ^2$, with speed ratio $s$.
+    The supplied equation represents an illustrative pump characteristic. Real
+    pump characteristics are normally obtained from manufacturer test data; a
+    fitted equation can then be used for numerical calculations. Here, $H_0=40$
+    m and $a=1.5\times10^6$ s²/m⁵ are synthetic teaching values, not a fit to
+    measurements from a particular pump. Use $Q$ in m³/s. The speed ratio is
+    $s=N/N_0$; the speed dependence follows approximate pump affinity scaling.
     Hydraulic power is $\rho gQH$ and shaft power is hydraulic power divided by efficiency.
     This curve is a teaching model; it does not establish NPSH margin or a safe pump envelope.
     ''', '''
     rho, mu, g = 998.0, 1.0e-3, 9.81
     length, rise, roughness, K = 120.0, 12.0, 4.5e-5, 8.0
+    # K is the determined total for bends and valves (dimensionless), not their count.
     diameter = 0.065
     H0, a, efficiency = 40.0, 1.5e6, 0.70  # a has units s²/m⁵
     Q = np.linspace(0.001, 0.007, 150)  # m³/s
@@ -108,11 +144,16 @@ write_lab('lab_01_flow', 'Lab 1 — Pipe flow and pump selection',
     ('5. Uncertainty and break — 45 minutes', 'Take a 10-minute break. For your chosen design vary roughness from 1e-6 to 2e-4 m and efficiency from 0.55 to 0.80. Identify which assumption changes the recommendation most. Describe what additional data a real pump selection needs.', '# TODO: sensitivity study and limiting-case checks.')],
     'Add a second pump in parallel by combining flows at equal head. Compare its operating point with twice the single-pump flow.')
 
-write_lab('lab_02_heat', 'Lab 2 — Heat recovery with a countercurrent exchanger',
+write_lab('optional_labs/lab_02_heat', 'Lab 2 — Heat recovery with a countercurrent exchanger',
     'Recover heat from a warm process stream to preheat water. Size an exchanger and predict how fouling changes its performance.',
     r'''## Model and assumptions
+
     Steady operation, no heat loss or phase change, constant heat capacities and overall
     heat-transfer coefficient; ideal countercurrent flow, so the LMTD correction factor is 1.
+    For the main case, assume the clean overall coefficient is
+    $U_{clean}=650$ W/(m² K), based on heat-transfer area. It is a supplied
+    teaching value, not inferred from the inlet temperatures. Added fouling
+    resistance is introduced explicitly in the design comparison.
     $C_h=\dot m_hc_{p,h}$, $C_c=\dot m_cc_{p,c}$, and
     $\dot Q=C_h(T_{h,in}-T_{h,out})=C_c(T_{c,out}-T_{c,in})$.
     $\Delta T_1=T_{h,in}-T_{c,out}$, $\Delta T_2=T_{h,out}-T_{c,in}$.
@@ -138,9 +179,10 @@ write_lab('lab_02_heat', 'Lab 2 — Heat recovery with a countercurrent exchange
     ('5. Sensitivity and break — 45 minutes', 'Take a 10-minute break. Vary cold mass flow from 0.5 to 1.8 kg/s at fixed installed area and assumed U. Discuss the tradeoff between outlet temperature and recovered heat. Explain why holding U constant may be questionable and which hydraulic calculation is missing.', '# TODO: parameter sweep and engineering interpretation.')],
     'Introduce a heat-loss term and determine what additional measurements would be needed to distinguish fouling from heat loss.')
 
-write_lab('lab_03_distillation', 'Lab 3 — Binary distillation and ideal stages',
+write_lab('main_labs/lab_03_distillation', 'Lab 3 — Binary distillation and ideal stages',
     'Design a teaching-model binary distillation column, using graphical stepping and a numerical stage counter. Explore the cost of demanding higher purity.',
     r'''## Model and assumptions
+
     Binary mixture, constant relative volatility $\alpha=2.4$, constant molar overflow,
     saturated-liquid feed ($q=1$), total condenser and equilibrium partial reboiler.
     These assumptions define a hypothetical mixture; they are not property data for a real pair.
@@ -171,9 +213,10 @@ write_lab('lab_03_distillation', 'Lab 3 — Binary distillation and ideal stages
     ('5. Real trays and break — 45 minutes', 'Take a 10-minute break. For the base case, convert ideal trays to installed trays using overall tray efficiency E_o = 0.50, 0.65 and 0.80: ceil((N_ideal-1)/E_o). The reboiler is excluded from the tray conversion. Estimate active height using 0.45 m spacing times installed tray count. Explain the difference between overall and Murphree efficiency and the omitted height allowances.', '# TODO: table of installed trays and active heights.')],
     'Replace constant relative volatility with instructor-supplied equilibrium data; interpolate monotonically and compare stage counts.')
 
-write_lab('lab_04_absorption', 'Lab 4 — Gas absorption and column height',
+write_lab('optional_labs/lab_04_absorption', 'Lab 4 — Gas absorption and column height',
     'Remove a dilute solute from a gas using a countercurrent solvent. Connect material balances, ideal stages, efficiency and a hydraulic screening calculation.',
     r'''## Model and assumptions
+
     Isothermal, dilute, nonreacting absorption with constant solute-free gas and solvent
     flow rates $G_s,L_s$ (kmol/h). Use mole ratios $Y=y/(1-y)$ and $X=x/(1-x)$.
     Assume the hypothetical equilibrium relation $Y^*=mX$, with $m=1.5$.
@@ -204,4 +247,7 @@ write_lab('lab_04_absorption', 'Lab 4 — Gas absorption and column height',
     'Compare the stage model with a continuous transfer-unit model. State which additional mass-transfer coefficients and interfacial-area data are needed.')
 
 if __name__ == '__main__':
-    print('Built four student notebooks.')
+    if SELECTED_LAB in (None,'preparation/lab_00_balances'):
+        from balances_intro import build_intro
+        build_intro()
+    print('Built student notebooks' + (f': {SELECTED_LAB}' if SELECTED_LAB else ': all five') + '.')

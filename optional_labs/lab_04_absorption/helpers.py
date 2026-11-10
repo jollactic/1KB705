@@ -43,3 +43,32 @@ def ergun_gradient(superficial_velocity, void_fraction, particle_diameter,
         raise ValueError('Superficial velocity must be nonnegative.')
     e, dp, u = void_fraction, particle_diameter, superficial_velocity
     return 150*viscosity*(1-e)**2*u/(e**3*dp**2)+1.75*density*(1-e)*u**2/(e**3*dp)
+
+
+def compare_designs(worst_slope=1.8,hetp=1.2,service_price=60.,years=10):
+    """Same 90% removal; solvent/height choice robust to specified equilibrium slope.
+
+    Baseline Lmin=135 kmol/h. Max active packed height 6 m; no flooding inference.
+    Synthetic installed packing cost €20000+6000*height; annual solvent-service
+    cost €60 per (kmol/h) of circulation, assuming 4000 h/year. Not solvent purchase
+    or a calculated regeneration duty. No hydraulics, discounting or maintenance.
+    """
+    if worst_slope < 1.5 or hetp <= 0 or min(service_price,years)<0:
+        raise ValueError('Require adverse slope >=1.5, positive HETP and nonnegative costs/time.')
+    rows=[]
+    for multiple in [1.1,1.5,1.8,2.0,2.5]:
+        solvent = 135*multiple
+        nominal,_ = stage_count(100,solvent,.03,.003,0,1.5)
+        minimum = 100*(.03-.003)/(.03/worst_slope)
+        if solvent <= minimum:
+            rows.append(dict(multiple=multiple,solvent=solvent,nominal=nominal,
+                             worst=np.nan,height=np.nan,total=np.nan,feasible=False,
+                             reason='equilibrium pinch'))
+            continue
+        worst,_ = stage_count(100,solvent,.03,.003,0,worst_slope)
+        height = hetp*worst
+        capital = 20000+6000*height
+        rows.append(dict(multiple=multiple,solvent=solvent,nominal=nominal,worst=worst,
+                         height=height,total=capital+years*service_price*solvent,
+                         feasible=height<=6,reason='OK' if height<=6 else 'height limit'))
+    return rows

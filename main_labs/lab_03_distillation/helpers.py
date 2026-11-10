@@ -60,3 +60,32 @@ def stage_count(z_feed, x_distillate, x_bottoms, reflux, alpha=2.4, max_stages=3
         points.append((x, y))
         old_x = x
     raise ValueError('Stage cap reached; increase reflux or inspect the model.')
+
+
+def compare_designs(feed=100.,efficiency=.65,heat_price=.03,years=10,hours=4000):
+    """Same separation; synthetic active-height/vapour limits and cost comparison.
+
+    Specs zF=.45,xD=.95,xB=.05, alpha=2.4, q=1. Max active height 8 m,
+    max V=190 kmol/h. QR=V*lambda/3600 kW with assumed equal latent heats
+    lambda=30000 kJ/kmol and negligible sensible changes. Approximate duty model,
+    not measured mixture data. Installed cost €50000+3000*Ntrays+250*V;
+    no cooling cost, hydraulic sizing, maintenance or discounting.
+    """
+    if feed <= 0 or not 0 < efficiency <= 1 or min(heat_price,years,hours)<0:
+        raise ValueError('Require positive feed, efficiency in (0,1], nonnegative costs/time.')
+    D = feed*(.45-.05)/(.95-.05)
+    minimum = minimum_reflux(.45,.95)
+    rows = []
+    for multiple in [1.1,1.5,1.8,2.0,2.2,3.0]:
+        R = multiple*minimum
+        N,_ = stage_count(.45,.95,.05,R)
+        trays = int(np.ceil((N-1)/efficiency))
+        height = trays*.45
+        V = (R+1)*D
+        duty_kw = V*30000/3600
+        capital = 50000+3000*trays+250*V
+        rows.append(dict(multiple=multiple,R=R,stages=N,trays=trays,height=height,V=V,
+                         duty_kw=duty_kw,capital=capital,
+                         total=capital+duty_kw*heat_price*hours*years,
+                         feasible=height<=8 and V<=190))
+    return rows

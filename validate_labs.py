@@ -7,12 +7,13 @@ import subprocess
 import sys
 import nbformat
 import numpy as np
+from course_structure import ROLES
 
 ROOT = Path(__file__).parent.resolve()
 
 
 def load(folder):
-    spec = importlib.util.spec_from_file_location(folder, ROOT/folder/'helpers.py')
+    spec = importlib.util.spec_from_file_location(folder.replace('/','_'), ROOT/folder/'helpers.py')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
@@ -31,7 +32,7 @@ def rejects(function, *args):
 
 
 def main():
-    for folder in sorted(ROOT.glob('lab_*')):
+    for folder in [ROOT/path for path in ROLES]:
         if not folder.is_dir():
             continue
         notebook = nbformat.read(folder/'lab.ipynb', as_version=4)
@@ -45,7 +46,19 @@ def main():
             raise AssertionError(f'{folder.name}: {result.stderr}')
         print(f'{folder.name}: valid notebook; supplied code executes')
 
-    flow = load('lab_01_flow')
+    intro = load('preparation/lab_00_balances')
+    total,fraction = intro.mix_streams(80,.1,20)
+    close(total,100); close(total*fraction,8)
+    product,vapour = intro.evaporate(100,.08,.2)
+    close(product+vapour,100); close(product*.2,8)
+    close(intro.heating_duty(2,4180,20,50),250800)
+    close(intro.mixing_temperature(.5,80,1.5,20),35)
+    close(intro.tank_inventory(50,2,1.5,600),350)
+    rejects(intro.evaporate,100,.08,.05)
+    rejects(intro.tank_inventory,50,2,2.5,600)
+    print('Lab 00: basic balances, conservation and model-domain checks passed')
+
+    flow = load('main_labs/lab_01_flow')
     close(flow.friction_factor(1000, 0), 0.064)
     rejects(flow.friction_factor, 3000, 0)
     # Independent implicit Colebrook solution, compare approximate Haaland within 2%.
@@ -66,10 +79,32 @@ def main():
     q = (lo+hi)/2
     assert abs(residual(q)) < 1e-8
     head = float(flow.pump_head(q))
-    power = 998*9.81*q*head/.7
-    print(f'Flow base: Q={1000*q:.6f} L/s, H={head:.6f} m, shaft={power:.6f} W')
+    point = flow.performance(q)
+    close(point['hydraulic'],998*9.81*q*head)
+    close(point['electrical']*.90*.96,point['shaft'])
+    assert not point['recommended']
+    assert flow.performance(0)['shaft'] > 0 and flow.performance(0)['efficiency'] == 0
+    grid = np.linspace(0,flow.RUNOUT_FLOW,1000)
+    eta = flow.performance(grid)['efficiency']
+    assert np.all((eta >= 0) & (eta <= 1))
+    # Affinity scaling at corresponding points must preserve efficiency and scale power cubically.
+    rated, slower = flow.performance(.003), flow.performance(.003*.8,.8)
+    close(slower['head'],rated['head']*.8**2)
+    close(slower['shaft'],rated['shaft']*.8**3)
+    close(slower['efficiency'],rated['efficiency'])
+    for arrangement in ['single','series','parallel']:
+        row = flow.design_at_flow(.003,.065,arrangement=arrangement)
+        close(flow.arrangement_head(.003,row['speed'],arrangement),row['head'])
+        close(row['shaft']*row['efficiency'],998*9.81*.003*row['head'])
+        close(row['annual_kwh'],row['specific_kwh']*.003*3600*4000)
+    assert flow.design_at_flow(.006,.08,arrangement='parallel')['feasible']
+    assert not flow.design_at_flow(.006,.08)['feasible']
+    assert flow.design_at_flow(.003,.08,rise=55,arrangement='series')['feasible']
+    assert not flow.design_at_flow(.003,.08,rise=55)['feasible']
+    rejects(flow.performance,flow.RUNOUT_FLOW*1.01)
+    print(f'Flow uncontrolled base: Q={1000*q:.6f} L/s, H={head:.6f} m, electrical={point["electrical"]:.6f} W')
 
-    heat = load('lab_02_heat')
+    heat = load('optional_labs/lab_02_heat')
     close(heat.lmtd(20, 20), 20)
     rejects(heat.lmtd, -1, 20)
     close(heat.countercurrent_effectiveness(2, 1), 2/3)
@@ -84,8 +119,14 @@ def main():
     fouled = heat.outlets(area/(1/650+.0006), ch, cc, 85, 15)
     assert fouled[1] < co
     print(f'Heat base: duty={duty/1000:.3f} kW, Tho={tho:.6f} C, A={area:.6f} m²; fouled Tco={fouled[1]:.6f} C')
+    heat_candidates = heat.compare_designs()
+    assert np.isclose(min(heat_candidates,key=lambda r:r['total'])['area'],11.30152)
+    for row in heat_candidates:
+        assert row['recovery_kw']+row['trim_kw'] >= 167.2-1e-8
+        close(row['annual_kwh'],row['trim_kw']*4000)
+    assert np.isclose(min(heat.compare_designs(0),key=lambda r:r['total'])['area'],8.13059)
 
-    dist = load('lab_03_distillation')
+    dist = load('main_labs/lab_03_distillation')
     x = np.linspace(0, 1, 50)
     assert np.allclose(dist.inverse_equilibrium(dist.equilibrium(x)), x)
     rmin = dist.minimum_reflux(.45, .95)
@@ -99,8 +140,15 @@ def main():
     D = 100*(.45-.05)/(.95-.05)
     close(D*.95+(100-D)*.05, 45)
     print(f'Distillation base: D={D:.6f} kmol/h, Rmin={rmin:.6f}, ideal stages={stages}')
+    column_candidates = dist.compare_designs()
+    feasible_columns = [r for r in column_candidates if r['feasible']]
+    close(min(feasible_columns,key=lambda r:r['total'])['multiple'],1.8)
+    for row in column_candidates:
+        close(row['duty_kw'],row['V']*30000/3600)
+        assert row['feasible'] == (row['height']<=8 and row['V']<=190)
+    assert [r['multiple'] for r in dist.compare_designs(120) if r['feasible']]==[1.8]
 
-    absorb = load('lab_04_absorption')
+    absorb = load('optional_labs/lab_04_absorption')
     lmin = 100*(.03-.003)/(.03/1.5)
     solvent = 1.5*lmin
     count, points = absorb.stage_count(100, solvent, .03, .003)
@@ -113,7 +161,13 @@ def main():
     close(absorb.ergun_gradient(0, .7, .025), 0)
     gradient = absorb.ergun_gradient(.8, .7, .025)
     print(f'Absorption base: Lmin={lmin:.6f}, L={solvent:.6f} kmol/h, ideal stages={count}, dry gradient={gradient:.6f} Pa/m')
-    print('All benchmark and invalid-input checks passed.')
+    absorber_candidates = absorb.compare_designs()
+    feasible_absorbers = [r for r in absorber_candidates if r['feasible']]
+    close(min(feasible_absorbers,key=lambda r:r['total'])['solvent'],243)
+    assert not absorber_candidates[0]['feasible'] and np.isnan(absorber_candidates[0]['total'])
+    assert not absorber_candidates[1]['feasible']  # nominal choice violates adverse height
+    assert not any(r['feasible'] for r in absorb.compare_designs(hetp=3))
+    print('All benchmark, design-service and invalid-input checks passed.')
 
 
 if __name__ == '__main__':
