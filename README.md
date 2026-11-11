@@ -119,10 +119,14 @@ share the name `helpers`, which Python caches within a running kernel.
 
 ## Run in Colab
 
-Upload `lab.ipynb` and the matching `helpers.py` from one folder. The notebook's
-first code cell also supports downloading the helper from a raw GitHub URL once
-you publish the repository. Set `HELPER_URL` to the actual owner, repository,
-commit and lab path. No GitHub account or URL is assumed by this draft.
+Open or upload `lab.ipynb` from the desired folder and run its setup cell. It
+downloads the matching helper from
+`https://raw.githubusercontent.com/jollactic/1KB705/refs/heads/jolla/<lab-folder>/helpers.py`
+when no local `helpers.py` exists. Each notebook includes its full actual URL;
+no owner/repository placeholders need editing. You can also upload the matching
+helper manually. Use a fresh session for each lab so a helper from another lab
+is not accidentally reused. For a frozen teaching release, replace `refs/heads/jolla`
+with a specific commit SHA. `helper_download.py` maintains these setup cells.
 Colab normally supplies NumPy and Matplotlib. The notebooks use no SciPy features.
 
 ## Teaching and assessment

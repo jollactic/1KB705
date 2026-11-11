@@ -5,6 +5,7 @@ import base64
 import inspect
 import nbformat
 from course_structure import apply_course_role
+from helper_download import helper_setup
 
 ROOT=Path(__file__).parent
 
@@ -276,16 +277,10 @@ salt mass flow, salt fraction, or both change? Write your prediction before runn
 '''),md('''### Setup
 
 Locally, open this notebook in `preparation/lab_00_balances` with its own `helpers.py`. In Colab,
-upload this notebook and that helper file using the Files panel. A separate
-kernel/session prevents confusion with helpers from the other labs.
-'''),code('''
-from pathlib import Path
-if not Path('helpers.py').exists():
-    raise FileNotFoundError('Upload preparation/lab_00_balances/helpers.py beside this notebook, then rerun.')
-import numpy as np
-import matplotlib.pyplot as plt
-import helpers as h
-''')]
+run the setup cell to download the matching helper from the published `jolla`
+branch, or upload it using the Files panel. An existing local helper is retained.
+A separate kernel/session prevents confusion with helpers from the other labs.
+'''),code(helper_setup('preparation/lab_00_balances'))]
     if solution:
         cells.insert(1,md('''**Completed instructor solution.** Written answers use the printed default
 settings. Edited inputs change numerical outputs, not the written explanations.
