@@ -7,6 +7,7 @@ from teaching_materials import system_diagram, EXAMPLES, GUIDANCE
 from design_materials import apply_design_version
 from lab_inputs import MAIN_INPUTS
 from course_structure import apply_course_role
+from helper_download import helper_setup
 
 ROOT = Path(__file__).parent
 SELECTED_LAB = None
@@ -42,24 +43,12 @@ def write_lab(folder, title, intro, theory, starter, tasks, extension):
     affects its size or energy demand. Explain your reasoning in two sentences.
 
     Locally, place `helpers.py` beside this notebook and install the root requirements.
-    In Colab, upload both files using the Files panel. Alternatively, after the repository
-    is published, set `HELPER_URL` below to the raw GitHub URL of this lab's `helpers.py`.
-    Use a commit SHA in the URL for reproducible teaching. Only download code from a
-    repository you trust. Each lab needs only its own helper file.
-    '''), code('''
-    from pathlib import Path
-    from urllib.request import urlretrieve
-
-    HELPER_URL = ""  # e.g. https://raw.githubusercontent.com/OWNER/REPO/COMMIT/main_labs/lab_01_flow/helpers.py
-    if not Path("helpers.py").exists():
-        if not HELPER_URL:
-            raise FileNotFoundError("Upload this lab's helpers.py or set HELPER_URL, then rerun.")
-        urlretrieve(HELPER_URL, "helpers.py")
-
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import helpers as h
-    '''), md(theory), code(starter)]
+    In Colab, run the setup cell to download this lab's helper from the published
+    `jolla` branch. Alternatively, upload its matching `helpers.py` using the Files
+    panel. An existing local helper is retained. Each lab needs only its own helper
+    file; use a separate session for each lab. To freeze a teaching release, replace
+    `refs/heads/jolla` in the URL with the intended commit SHA.
+    '''), code(helper_setup(folder)), md(theory), code(starter)]
     diagram = md('''## See the whole system
 
 ![Connected equipment and labelled streams](attachment:system.png)
